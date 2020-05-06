@@ -14,23 +14,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class NewEvent {
+public class NewJob {
 
-
-
-    @FXML public Label welcomeID;
+    @FXML public TextField proField;
+    @FXML public TextField descField;
     @FXML public Label title;
     @FXML public Label description;
-    @FXML public TextField titleField;
-    @FXML public TextField descField;
-    @FXML public TextField capField;
-    @FXML public TextField dateField;
-    @FXML public TextField venField;
+    @FXML public Label propPrice;
     @FXML public Button submitBut;
     @FXML public Button cancelBut;
+    @FXML public TextField titleField;
+    @FXML public Label welcomeID;
 
-    @FXML protected void initialize() throws Exception {
-        welcomeID.setText("New Event Post");
+    @FXML
+    protected void initialize() throws Exception {
+        welcomeID.setText("New Job Post");
     }
 
 
@@ -38,9 +36,9 @@ public class NewEvent {
         try {
 
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(MainMenu.class.getResource("/View/New_Event.fxml"));
-            Scene scene = new Scene(root, 321, 354);
-            stage.setTitle("New Event Post");
+            Parent root = FXMLLoader.load(MainMenu.class.getResource("/View/New_Job.fxml"));
+            Scene scene = new Scene(root, 321, 233);
+            stage.setTitle("New Job Post");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -56,12 +54,11 @@ public class NewEvent {
         Stage stage = (Stage) submitBut.getScene().getWindow();
         String title = titleField.getText();
         String description = descField.getText();
-        int capacity = Integer.parseInt(capField.getText());
-        String date = dateField.getText();
-        String venue = venField.getText();
+        int propPrice = Integer.parseInt(proField.getText());
 
-        Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0);
-        Databases.post.add(e1);
+
+        Model.Job j1 = new Model.Job(null, title, description, Login.studentID,propPrice,0);
+        Databases.post.add(j1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

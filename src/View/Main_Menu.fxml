@@ -34,9 +34,9 @@
             </MenuBar>
             <ToolBar>
               <items>
-                <Button fx:id="newEvent" mnemonicParsing="false" onAction="#newPostClickHandler" text="New Event Post" />
-                  <Button fx:id="newSale" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="New Sale Post" />
-                  <Button fx:id="newJob" layoutX="113.0" layoutY="10.0" mnemonicParsing="false" text="New Job Post" />
+                <Button fx:id="newEvent" mnemonicParsing="false" onAction="#newEventClickHandler" text="New Event Post" />
+                  <Button fx:id="newSale" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#newSaleClickHandler" text="New Sale Post" />
+                  <Button fx:id="newJob" layoutX="113.0" layoutY="10.0" mnemonicParsing="false" onAction="#newJobClickHandler" text="New Job Post" />
                   <Region prefHeight="25.0" prefWidth="29.0" />
                   <MenuButton fx:id="typeDrop" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Type">
                     <items>

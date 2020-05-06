@@ -45,8 +45,8 @@
             <Label fx:id="Date" layoutX="32.0" layoutY="111.0" prefHeight="23.0" prefWidth="42.0" text="Date" />
             <TextField fx:id="venField" layoutX="157.0" layoutY="145.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="140.0" />
             <Label fx:id="Venue" layoutX="32.0" layoutY="141.0" prefHeight="23.0" prefWidth="42.0" text="Venue" />
-            <Button fx:id="submitBut" layoutX="31.0" layoutY="206.0" mnemonicParsing="false" onAction="#SubmitForm" text="Submit" />
-            <Button fx:id="cancelBut" layoutX="197.0" layoutY="206.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="submitBut" layoutX="100.0" layoutY="206.0" mnemonicParsing="false" onAction="#SubmitForm" text="Submit" />
+            <Button fx:id="cancelBut" layoutX="197.0" layoutY="206.0" mnemonicParsing="false" onAction="#CancelForm" text="Cancel" />
          </children>
       </AnchorPane>
    </center>

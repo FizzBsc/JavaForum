@@ -50,8 +50,8 @@ public class Login {
             studentID = Databases.SID.get(i);
             if (inputSID.getText().equals(studentID))
             {
-
-                MainMenu.startMenu();
+                MainMenu menu = new MainMenu();
+                menu.startMenu();
                 stage.close();
                 break;
 

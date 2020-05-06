@@ -38,7 +38,8 @@ public class Sale extends Post {
     }
 
     @Override
-    public void handleReply(Reply reply) {// HandleReply used to store to DB extension
+    public void handleReply(String cell) {
+        System.out.println(cell + "sale");
 
     }
 

@@ -41,7 +41,7 @@ public abstract class Post {
         return status;
     }
 
-    public abstract void handleReply(Reply reply);
+    public abstract void handleReply(String cell);
     public abstract String getReplyDetails();
 
 

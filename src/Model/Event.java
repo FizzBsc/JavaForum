@@ -39,7 +39,8 @@ public class Event extends Post {
 
 
     @Override
-    public void handleReply(Reply reply) {
+    public void handleReply(String cell) {
+        System.out.println(cell + "event");
 
     }
 

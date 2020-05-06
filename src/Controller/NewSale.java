@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Databases;
-import Model.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,23 +13,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class NewEvent {
+public class NewSale {
+    public Label welcomeID;
+    public TextField titleField;
+    public TextField askPriField;
+    public TextField descField;
+    public Label title;
+    public TextField minRaiField;
+    public Label description;
+    public Label askPrice;
+    public Label minRaise;
+    public Button submitBut;
+    public Button cancelBut;
 
-
-
-    @FXML public Label welcomeID;
-    @FXML public Label title;
-    @FXML public Label description;
-    @FXML public TextField titleField;
-    @FXML public TextField descField;
-    @FXML public TextField capField;
-    @FXML public TextField dateField;
-    @FXML public TextField venField;
-    @FXML public Button submitBut;
-    @FXML public Button cancelBut;
-
-    @FXML protected void initialize() throws Exception {
-        welcomeID.setText("New Event Post");
+    @FXML
+    protected void initialize() throws Exception {
+        welcomeID.setText("New Sale Post");
     }
 
 
@@ -38,9 +36,9 @@ public class NewEvent {
         try {
 
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(MainMenu.class.getResource("/View/New_Event.fxml"));
-            Scene scene = new Scene(root, 321, 354);
-            stage.setTitle("New Event Post");
+            Parent root = FXMLLoader.load(MainMenu.class.getResource("/View/New_Sale.fxml"));
+            Scene scene = new Scene(root, 321, 233);
+            stage.setTitle("New Sale Post");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -56,12 +54,12 @@ public class NewEvent {
         Stage stage = (Stage) submitBut.getScene().getWindow();
         String title = titleField.getText();
         String description = descField.getText();
-        int capacity = Integer.parseInt(capField.getText());
-        String date = dateField.getText();
-        String venue = venField.getText();
+        int askPrice = Integer.parseInt(askPriField.getText());
+        int minRaise = Integer.parseInt(minRaiField.getText());
 
-        Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0);
-        Databases.post.add(e1);
+
+        Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID,askPrice,0,minRaise);
+        Databases.post.add(s1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
