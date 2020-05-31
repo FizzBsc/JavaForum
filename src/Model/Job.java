@@ -37,4 +37,9 @@ public class Job extends Post {
     public String getReplyDetails() {
         return creatorID;
     }
+
+    @Override
+    public String postID() {
+        return null;
+    }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainMenu">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="663.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainMenu">
    <top>
       <VBox prefHeight="51.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -27,7 +27,7 @@
                 </Menu>
                 <Menu fx:id="dataDrop" mnemonicParsing="false" text="Data">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem fx:id="save" mnemonicParsing="false" onAction="#newSaveClickHandler" text="Save" />
                   </items>
                 </Menu>
               </menus>
@@ -37,7 +37,7 @@
                 <Button fx:id="newEvent" mnemonicParsing="false" onAction="#newEventClickHandler" text="New Event Post" />
                   <Button fx:id="newSale" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#newSaleClickHandler" text="New Sale Post" />
                   <Button fx:id="newJob" layoutX="113.0" layoutY="10.0" mnemonicParsing="false" onAction="#newJobClickHandler" text="New Job Post" />
-                  <Region prefHeight="25.0" prefWidth="29.0" />
+                  <Region prefHeight="25.0" prefWidth="96.0" />
                   <MenuButton fx:id="typeDrop" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Type">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Action 1" />
@@ -61,13 +61,13 @@
             <ToolBar prefHeight="0.0" prefWidth="600.0">
               <items>
                 <Button mnemonicParsing="false" text="Button" />
-                  <Region prefHeight="25.0" prefWidth="181.0" />
+                  <Region prefHeight="25.0" prefWidth="221.0" />
                   <Label fx:id="welcomeID" text="Welcome USER">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Region layoutX="66.0" layoutY="10.0" prefHeight="25.0" prefWidth="172.0" />
+                  <Region layoutX="66.0" layoutY="10.0" prefHeight="25.0" prefWidth="197.0" />
                   <Button fx:id="logoutButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutClickHandler" text="logout" />
               </items>
             </ToolBar>
@@ -82,9 +82,9 @@
             <TableColumn fx:id="titleColumn" prefWidth="70.0" text="Title" />
             <TableColumn fx:id="descriptionColumn" prefWidth="103.0" text="Description" />
             <TableColumn fx:id="creatorColumn" prefWidth="75.0" text="Creator" />
-            <TableColumn prefWidth="83.0" text="Details" />
-            <TableColumn fx:id="replyColumn" prefWidth="52.99993896484375" />
-            <TableColumn prefWidth="63.0" />
+            <TableColumn fx:id="detailColumn" prefWidth="105.3333740234375" text="Details" />
+            <TableColumn fx:id="replyColumn" prefWidth="68.33322143554688" text="Reply" />
+            <TableColumn prefWidth="87.66668701171875" text="More Details" />
         </columns>
       </TableView>
    </center>

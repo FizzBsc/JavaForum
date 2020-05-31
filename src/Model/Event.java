@@ -48,4 +48,9 @@ public class Event extends Post {
     public String getReplyDetails() {
         return date;
     }
+
+    @Override
+    public String postID() {
+        return null;
+    }
 }

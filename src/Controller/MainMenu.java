@@ -1,10 +1,10 @@
 package Controller;
 
 import Model.Databases;
-import Model.Event;
 import Model.Post;
-import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import Model.Sale;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +16,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.*;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.function.Function;
+
+import static Model.Databases.checkSaleTable;
+import static Model.Databases.insertTable;
 
 public class MainMenu {
 
@@ -27,12 +31,18 @@ public class MainMenu {
     @FXML public Button newEvent;
     @FXML public Button newSale;
     @FXML public Button newJob;
+    @FXML public MenuItem save;
     @FXML private TableView<Post> tableView;
     @FXML private TableColumn<Post, String> postIDColumn;
     @FXML private TableColumn<Post, String> titleColumn;
     @FXML private TableColumn<Post, String> descriptionColumn;
     @FXML private TableColumn<Post, String> creatorColumn;
     @FXML private TableColumn<Post, Post> replyColumn;
+    @FXML private TableColumn<Post, String> detailColumn ;
+
+
+
+
     @FXML private void initialize()
     {
         welcomeID.setText("Welcome " + Login.studentID);
@@ -40,29 +50,42 @@ public class MainMenu {
         titleColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("description"));
         creatorColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("creatorID"));
-
-        replyColumn.setCellFactory(col -> {
-            Button replyButton = new Button("Reply");
-            TableCell<Post, Post> cell = new TableCell<Post, Post>() {
-                @Override
-                public void updateItem(Post person, boolean empty) {
-                    super.updateItem(person, empty);
-                        setGraphic(replyButton);
-                }
-            };
-            replyButton.setOnAction(e -> newReplyClickHandler(cell.getTableRow().getItem().getPostID()));
-
-            return cell ;
-        });
+        replyColumn.setCellFactory(col -> { return replybutton(); });
         tableView.setItems(getPost());
 
+
+        for(int i=0; i < Databases.post.size(); i++)
+        if((tableView.getColumns().get(4).getCellObservableValue(i).getValue()).equals("s1")){
+            System.out.println(creatorColumn.getCellObservableValue(i));
+            System.out.println(Databases.post.get(i).getCreatorID());
+
+        }else{
+            System.out.println("nope");
+        }
+
     }
+//    public static Object getValueAt(TableView table, int column, int row) {
+//        return table.getColumns().get(column).getCellObservableValue(row).getValue();
+//    }
 
     public ObservableList<Post> getPost()
     {
         ObservableList<Post> post = FXCollections.observableArrayList(Databases.post);
 
         return post;
+    }
+
+    public TableCell<Post, Post> replybutton(){
+        Button replyButton = new Button("Reply");
+        TableCell<Post, Post> cell = new TableCell<Post, Post>() {
+            @Override
+            public void updateItem(Post person, boolean empty) {
+                super.updateItem(person, empty);
+                setGraphic(replyButton);
+            }
+        };
+        replyButton.setOnAction(e -> newReplyClickHandler(cell.getTableRow().getItem().getPostID()));
+        return cell;
     }
 
     public void startMenu() throws Exception {
@@ -72,7 +95,7 @@ public class MainMenu {
 
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(MainMenu.class.getResource("/View/Main_Menu.fxml"));
-            Scene scene = new Scene(root, 600, 482);
+            Scene scene = new Scene(root, 663, 520);
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -100,7 +123,7 @@ public class MainMenu {
            System.out.println("Fail");
        }
     }
-
+    @FXML
     public void newReplyClickHandler(String cellID){
         for (int i = 0; i < Databases.post.size(); i++)
             if (cellID.equals(Databases.post.get(i).getPostID())){
@@ -121,7 +144,11 @@ public class MainMenu {
 
 
     }
-
+    @FXML
+    public void newSaveClickHandler(ActionEvent actionEvent) throws Exception{
+        checkSaleTable("Posts","Sale");
+        System.out.println("DataSaved");
+    }
     @FXML
     public void newEventClickHandler(ActionEvent actionEvent) throws Exception{
         Stage stage = (Stage) newEvent.getScene().getWindow();

@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.beans.value.ObservableValue;
+
 public abstract class Post {
 
     public String postID;
@@ -8,6 +10,7 @@ public abstract class Post {
     public String creatorID;
     private boolean status;
     public boolean delete; //delete post should still be accessible if there was an admin extension
+
 
 
     public Post (String postID, String title, String description, String creatorID) {
@@ -44,5 +47,5 @@ public abstract class Post {
     public abstract void handleReply(String cell);
     public abstract String getReplyDetails();
 
-
+    public abstract String postID();
 }

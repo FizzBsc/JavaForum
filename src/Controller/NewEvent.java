@@ -29,6 +29,7 @@ public class NewEvent {
     @FXML public Button submitBut;
     @FXML public Button cancelBut;
 
+
     @FXML protected void initialize() throws Exception {
         welcomeID.setText("New Event Post");
     }
@@ -57,6 +58,8 @@ public class NewEvent {
         String title = titleField.getText();
         String description = descField.getText();
         int capacity = Integer.parseInt(capField.getText());
+        boolean dateCheck;
+
         String date = dateField.getText();
         String venue = venField.getText();
 
@@ -65,6 +68,7 @@ public class NewEvent {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
 
         for (int i = 0; i<Databases.post.size(); i++){
             System.out.println(Databases.post.get(i).postID + Databases.post.get(i).getTitle());
@@ -76,6 +80,7 @@ public class NewEvent {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
 
     }
 }

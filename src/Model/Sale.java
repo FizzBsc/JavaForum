@@ -5,7 +5,6 @@ public class Sale extends Post {
     private double askPrice;
     private double highOffer;
     private double minRaise;
-    static Reply[] r = new Reply[100];
     int count = 0;
 
 
@@ -46,5 +45,10 @@ public class Sale extends Post {
     @Override
     public String getReplyDetails() {
         return creatorID;
+    }
+
+    @Override
+    public String postID() {
+        return null;
     }
 }

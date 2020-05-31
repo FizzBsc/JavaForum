@@ -26,6 +26,7 @@ public class NewJob {
     @FXML public TextField titleField;
     @FXML public Label welcomeID;
 
+
     @FXML
     protected void initialize() throws Exception {
         welcomeID.setText("New Job Post");
@@ -73,6 +74,7 @@ public class NewJob {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
 
     }
 }

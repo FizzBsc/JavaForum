@@ -13,18 +13,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Model.Databases.insertTable;
+
 public class NewSale {
-    public Label welcomeID;
-    public TextField titleField;
-    public TextField askPriField;
-    public TextField descField;
-    public Label title;
-    public TextField minRaiField;
-    public Label description;
-    public Label askPrice;
-    public Label minRaise;
-    public Button submitBut;
-    public Button cancelBut;
+    @FXML public Label welcomeID;
+    @FXML public TextField titleField;
+    @FXML public TextField askPriField;
+    @FXML public TextField descField;
+    @FXML public Label title;
+    @FXML public TextField minRaiField;
+    @FXML public Label description;
+    @FXML public Label askPrice;
+    @FXML public Label minRaise;
+    @FXML public Button submitBut;
+    @FXML public Button cancelBut;
+    static int sharedCounter = 0;
+
+
+
 
     @FXML
     protected void initialize() throws Exception {
@@ -58,8 +64,11 @@ public class NewSale {
         int minRaise = Integer.parseInt(minRaiField.getText());
 
 
+
         Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID,askPrice,0,minRaise);
         Databases.post.add(s1);
+        System.out.println(s1.postID);
+        insertTable(s1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
@@ -74,6 +83,7 @@ public class NewSale {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
 
     }
 }
