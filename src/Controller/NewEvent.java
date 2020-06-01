@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Model.Databases.insertTable;
+
 public class NewEvent {
 
 
@@ -65,6 +67,8 @@ public class NewEvent {
 
         Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0);
         Databases.post.add(e1);
+        System.out.println(e1.postID);//delete before submit
+        insertTable(e1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

@@ -11,9 +11,10 @@ public class Databases {
 
 
         final String DB_NAME = "Posts";
-        final String TABLE_NAME = "Sale";
-createTable(DB_NAME,TABLE_NAME);
+        final String TABLE_NAME = "Job";
         checkSaleTable("Posts", "Sale");
+        checkEventTable("Posts", "Event");
+        checkJobTable("Posts", "Job");
 
 
     }
@@ -23,14 +24,13 @@ createTable(DB_NAME,TABLE_NAME);
         try (Connection con = ConnectionTest.getConnection(DB_NAME);
              Statement stmt = con.createStatement();
         ) {
-            int result = stmt.executeUpdate("CREATE TABLE Sale ("
+            int result = stmt.executeUpdate("CREATE TABLE Job ("
                     + "postID VARCHAR(20) NOT NULL,"
                     + "title VARCHAR(20) NOT NULL,"
                     + "description VARCHAR(2000) NOT NULL,"
                     + "creatorID VARCHAR(20) NOT NULL,"
-                    + "askPrice DOUBLE NULL,"
-                    + "highOffer DOUBLE NULL,"
-                    + "minRaise DOUBLE NULL,"
+                    + "pPrice DOUBLE NOT NULL,"
+                    + "lowOffer DOUBLE NOT NULL,"
                     + "PRIMARY KEY (postID))");
             if (result == 0) {
                 System.out.println("Table " + TABLE_NAME + " has been created successfully");
@@ -42,29 +42,59 @@ createTable(DB_NAME,TABLE_NAME);
         }
     }
 
-    public static void insertTable(Post post) throws SQLException {
+    public static void insertTable(Post post) throws SQLException, ClassNotFoundException {
         String k = post.postID;
+        String name = null;
+        int result = 0;
         try (Connection con = ConnectionTest.getConnection("Posts");
              Statement stmt = con.createStatement();
         ) {
-            if (post instanceof  Sale) {
+            if (post instanceof Sale) {
                 String query = "INSERT INTO Sale" +
                         " VALUES ('" + k + "','" + post.getTitle() + "','" + post.getDescription() + "','" + post.getCreatorID() + "','" + ((Sale) post).getAskPrice() + "','" + ((Sale) post).getHighOffer() + "','" + ((Sale) post).getMinRaise() + "')";
-                int result = stmt.executeUpdate(query);
-
-                System.out.println(result + " row(s) affected");
-
-                con.commit();
+                result = stmt.executeUpdate(query);
+                name = "Sale";
+            } else if (post instanceof Event) {
+                String query = "INSERT INTO Event" +
+                        " VALUES ('" + k + "','" + post.getTitle() + "','" + post.getDescription() + "','" + post.getCreatorID() + "','" + ((Event) post).getVenue() + "','" + ((Event) post).getDate() + "','" + ((Event) post).getCapacity() + "','" + ((Event) post).getAttendeeCount() + "')";
+                result = stmt.executeUpdate(query);
+                name = "Event";
+            } else if (post instanceof Job) {
+                String query = "INSERT INTO Job" +
+                        " VALUES ('" + k + "','" + post.getTitle() + "','" + post.getDescription() + "','" + post.getCreatorID() + "','" + ((Job) post).getpPrice() + "','" + ((Job) post).getLowOffer() + "')";
+                result = stmt.executeUpdate(query);
+                name = "Job";
             }
+
+            System.out.println(result + " row(s) affected");
+
+            con.commit();
+            System.out.println("Insert into table "+ name +" executed successfully");
+        }
+    }
+    public static void checkEventTable(String DB_NAME, String TABLE_NAME){
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             Statement stmt = con.createStatement();
+        ) {
+            String query = "SELECT * FROM " + TABLE_NAME;
+
+            try (ResultSet resultSet = stmt.executeQuery(query)) {
+                while(resultSet.next()) {
+                    System.out.printf(" %s | %s | %s | %s | %s | %s | %d | %d\n",
+                            resultSet.getString("postID"),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                            resultSet.getString(5),resultSet.getString(6),resultSet.getInt(7),resultSet.getInt(8));
+                    post.add(new Event(resultSet.getString("postID"),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                            resultSet.getString(5),resultSet.getString(6),resultSet.getInt(7),resultSet.getInt(8)));
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        System.out.println("Insert into table Sale " + " executed successfully");
-
     }
-
-
 
     public static void checkSaleTable(String DB_NAME, String TABLE_NAME){
         try (Connection con = ConnectionTest.getConnection(DB_NAME);
@@ -81,11 +111,29 @@ createTable(DB_NAME,TABLE_NAME);
                             resultSet.getDouble(5),resultSet.getDouble(6),resultSet.getDouble(7)));
                 }
 
-                for (int i = 0; i<post.size(); i++)
-                    System.out.println(post.get(i).postID+ post.get(i).getTitle()
-                            + post.get(i).getDescription()+ post.get(i).getCreatorID()
-                            + ((Sale) post.get(i)).getAskPrice()+ ((Sale) post.get(i)).getHighOffer()
-                            + ((Sale) post.get(i)).getMinRaise());
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public static void checkJobTable(String DB_NAME, String TABLE_NAME){
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             Statement stmt = con.createStatement();
+        ) {
+            String query = "SELECT * FROM " + TABLE_NAME;
+
+            try (ResultSet resultSet = stmt.executeQuery(query)) {
+                while(resultSet.next()) {
+                    System.out.printf(" %s | %s | %s | %s | %d | %d\n",
+                            resultSet.getString("postID"),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                            resultSet.getInt(5),resultSet.getInt(6));
+                    post.add(new Job(resultSet.getString("postID"),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),
+                            resultSet.getInt(5),resultSet.getInt(6)));
+                }
+
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

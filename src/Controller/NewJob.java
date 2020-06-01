@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Model.Databases.insertTable;
+
 public class NewJob {
 
     @FXML public TextField proField;
@@ -60,6 +62,8 @@ public class NewJob {
 
         Model.Job j1 = new Model.Job(null, title, description, Login.studentID,propPrice,0);
         Databases.post.add(j1);
+        System.out.println(j1.postID);//delete before submit
+        insertTable(j1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

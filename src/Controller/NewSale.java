@@ -67,7 +67,7 @@ public class NewSale {
 
         Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID,askPrice,0,minRaise);
         Databases.post.add(s1);
-        System.out.println(s1.postID);
+        System.out.println(s1.postID);//delete before submit
         insertTable(s1);
         MainMenu menu = new MainMenu();
         menu.startMenu();
