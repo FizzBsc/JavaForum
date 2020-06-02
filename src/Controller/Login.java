@@ -37,8 +37,6 @@ public class Login {
         } catch (IOException e) {
             System.out.println("Fail");
         }
-
-
     }
 
     @FXML public void LoginClickHandler(ActionEvent actionEvent) throws Exception
