@@ -2,29 +2,27 @@ package Controller;
 
 import Model.Databases;
 import Model.Post;
-import Model.Sale;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.*;
-import javafx.util.Callback;
+import javafx.scene.control.ListView;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.function.Function;
 
 import static Model.Databases.checkSaleTable;
-import static Model.Databases.insertTable;
 
-public class MainMenu {
+public class MainMenu implements Initializable {
 
     @FXML public Button logoutButton;
     @FXML public Label welcomeID;
@@ -32,60 +30,21 @@ public class MainMenu {
     @FXML public Button newSale;
     @FXML public Button newJob;
     @FXML public MenuItem save;
-    @FXML private TableView<Post> tableView;
-    @FXML private TableColumn<Post, String> postIDColumn;
-    @FXML private TableColumn<Post, String> titleColumn;
-    @FXML private TableColumn<Post, String> descriptionColumn;
-    @FXML private TableColumn<Post, String> creatorColumn;
-    @FXML private TableColumn<Post, Post> replyColumn;
-    @FXML private TableColumn<Post, String> detailColumn ;
 
+    @FXML private ListView<Post> listView;
 
-
-
-    @FXML private void initialize()
-    {
-        welcomeID.setText("Welcome " + Login.studentID);
-        postIDColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("postID"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("title"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("description"));
-        creatorColumn.setCellValueFactory(new PropertyValueFactory<Post, String>("creatorID"));
-        replyColumn.setCellFactory(col -> { return replybutton(); });
-        tableView.setItems(getPost());
-
-
-        for(int i=0; i < Databases.post.size(); i++)
-        if((tableView.getColumns().get(4).getCellObservableValue(i).getValue()).equals("s1")){
-            System.out.println(creatorColumn.getCellObservableValue(i));
-            System.out.println(Databases.post.get(i).getCreatorID());
-
-        }else{
-            System.out.println("nope");
-        }
-
-    }
-//    public static Object getValueAt(TableView table, int column, int row) {
-//        return table.getColumns().get(column).getCellObservableValue(row).getValue();
-//    }
-
-    public ObservableList<Post> getPost()
+    public ObservableList<Post> getPost()//look here first if not loading
     {
         ObservableList<Post> post = FXCollections.observableArrayList(Databases.post);
 
         return post;
     }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        welcomeID.setText("Welcome " + Login.studentID);
+        listView.setItems(getPost());
+        listView.setCellFactory(postListView -> new PostListViewCell());
 
-    public TableCell<Post, Post> replybutton(){
-        Button replyButton = new Button("Reply");
-        TableCell<Post, Post> cell = new TableCell<Post, Post>() {
-            @Override
-            public void updateItem(Post person, boolean empty) {
-                super.updateItem(person, empty);
-                setGraphic(replyButton);
-            }
-        };
-        replyButton.setOnAction(e -> newReplyClickHandler(cell.getTableRow().getItem().getPostID()));
-        return cell;
     }
 
     public void startMenu() throws Exception {
@@ -106,12 +65,7 @@ public class MainMenu {
             System.out.println("Fail");
         }
     }
-    private static <S,T> TableColumn<S,T> column(String title, Function<S, ObservableValue<T>> property, double width) {
-        TableColumn<S,T> col = new TableColumn<>(title);
-        col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
-        col.setPrefWidth(width);
-        return col ;
-    }
+
 
     public void logOut() throws Exception {
         Stage stage = (Stage) logoutButton.getScene().getWindow();
@@ -123,27 +77,7 @@ public class MainMenu {
            System.out.println("Fail");
        }
     }
-    @FXML
-    public void newReplyClickHandler(String cellID){
-        for (int i = 0; i < Databases.post.size(); i++)
-            if (cellID.equals(Databases.post.get(i).getPostID())){
-                Post post = Databases.post.get(i);
-                if (post instanceof Model.Sale) {
-                    Model.Sale sale = (Model.Sale) post;
-                    sale.handleReply(cellID);
-                }
-                else if (post instanceof Model.Event) {
-                    Model.Event event = (Model.Event) post;
-                    event.handleReply(cellID);
-                }
-                else if (post instanceof Model.Job) {
-                    Model.Job job = (Model.Job) post;
-                    job.handleReply(cellID);
-                }
-            }
 
-
-    }
     @FXML
     public void newSaveClickHandler(ActionEvent actionEvent) throws Exception{
         checkSaleTable("Posts","Sale");

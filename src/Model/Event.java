@@ -39,9 +39,14 @@ public class Event extends Post {
 
 
     @Override
-    public void handleReply(String cell) {
-        System.out.println(cell + "event");
-
+    public boolean handleReply(String cellID) {
+        for (int i = 0; i < Databases.post.size(); i++)
+            if (cellID.equals(Databases.post.get(i).getPostID())) {
+                Post post = Databases.post.get(i);
+                if (post.getStatus() == true)
+                    return true;
+            }
+        return false;
     }
 
     @Override

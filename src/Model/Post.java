@@ -1,7 +1,5 @@
 package Model;
 
-import javafx.beans.value.ObservableValue;
-
 public abstract class Post {
 
     public String postID;
@@ -44,7 +42,7 @@ public abstract class Post {
         return status;
     }
 
-    public abstract void handleReply(String cell);
+    public abstract boolean handleReply(String cell) throws Exception;
     public abstract String getReplyDetails();
 
     public abstract String postID();

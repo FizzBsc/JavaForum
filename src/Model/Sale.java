@@ -37,9 +37,15 @@ public class Sale extends Post {
     }
 
     @Override
-    public void handleReply(String cell) {
-        System.out.println(cell + "sale");
+    public boolean handleReply(String cell) {
+        for (int i = 0; i < Databases.post.size(); i++)
+            if (cell.equals(Databases.post.get(i).getPostID())) {
+                Post post = Databases.post.get(i);
+                if (post.getStatus() == true)
+                return true;
+            }
 
+        return false;
     }
 
     @Override
