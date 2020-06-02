@@ -31,10 +31,6 @@ public class Sale extends Post {
     public double getMinRaise() {
         return minRaise;
     }
-    public void getPostDetails() {
-
-
-    }
 
     @Override
     public boolean handleReply(String cell) {

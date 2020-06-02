@@ -32,7 +32,7 @@
                                     <Insets left="7.0" top="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="cancelBut" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Button">
+                              <Button fx:id="cancelBut" mnemonicParsing="false" onAction="#cancelForm" prefHeight="25.0" prefWidth="84.0" text="Button">
                                  <VBox.margin>
                                     <Insets left="7.0" top="10.0" />
                                  </VBox.margin>

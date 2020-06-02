@@ -2,23 +2,23 @@ package Controller;
 
 import Model.Databases;
 import Model.Post;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-
+import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 import static Model.Databases.checkSaleTable;
 
@@ -30,6 +30,7 @@ public class MainMenu implements Initializable {
     @FXML public Button newSale;
     @FXML public Button newJob;
     @FXML public MenuItem save;
+    @FXML public MenuItem quit;
 
     @FXML private ListView<Post> listView;
 
@@ -104,5 +105,10 @@ public class MainMenu implements Initializable {
     @FXML
     public void logoutClickHandler(ActionEvent actionEvent) throws Exception{
         logOut();
+    }
+    @FXML
+    public void quitClickHandler(ActionEvent actionEvent) throws Exception
+    {
+        Platform.exit();
     }
 }

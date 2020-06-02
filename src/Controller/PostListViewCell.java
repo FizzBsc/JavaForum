@@ -57,7 +57,7 @@ public class PostListViewCell extends ListCell<Post> {
             label2.setText("Title: " +post.getTitle());
             label3.setText("Description: " + post.getDescription());
             label4.setText("Creator: " + post.getCreatorID());
-            if (post.getCreatorID().equals(Login.studentID))
+            if (post.getCreatorID().equals(Login.studentID) || post.getStatus() == false)
                 replyButton.setVisible(false);
             else
                 replyButton.setOnAction(e -> {
@@ -71,7 +71,7 @@ public class PostListViewCell extends ListCell<Post> {
             if (post.getCreatorID().equals(Login.studentID))
                 moreButton.setOnAction(e -> {
                     try {
-                        newReplyClickHandler(post.getPostID());
+                        moreDeetClickHandler(post.getPostID());
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
@@ -85,6 +85,60 @@ public class PostListViewCell extends ListCell<Post> {
         }
 
     }
+
+    private void moreDeetClickHandler(String cellID) throws Exception {
+        Stage stage = (Stage) moreButton.getScene().getWindow();
+        for (int i = 0; i < Databases.post.size(); i++)
+            if (cellID.equals(Databases.post.get(i).getPostID())){
+                Post post = Databases.post.get(i);
+                if (post instanceof Model.Sale) {
+                    Model.Sale sale = (Model.Sale) post;
+                    if (sale.handleReply(cellID)==true) {
+                        startMoreDeet(post);
+                        stage.close();
+                    }
+                }
+                else if (post instanceof Model.Event) {
+                    Model.Event event = (Model.Event) post;
+                    if(event.handleReply(cellID) == true){
+                        startMoreDeet(post);
+                        stage.close();
+                    }
+                }
+                else if (post instanceof Model.Job) {
+                    Model.Job job = (Model.Job) post;
+                    if (job.handleReply(cellID) == true){
+                        startMoreDeet(post);
+                        stage.close();
+                    }
+                }
+            }
+
+
+    }
+
+    private void startMoreDeet(Post post) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/View/More_Details.fxml"));
+            Parent view = loader.load();
+
+            Scene scene = new Scene(view);
+
+            MoreDetail md = loader.getController();
+            md.initData(post);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reply");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            System.out.println("Fail");
+        }
+    }
+
     @FXML
     public void newReplyClickHandler(String cellID) throws Exception {
         Stage stage = (Stage) replyButton.getScene().getWindow();
@@ -137,6 +191,7 @@ public class PostListViewCell extends ListCell<Post> {
         } catch (IOException e) {
             System.out.println("Fail");
         }
+
     }
 
 

@@ -47,7 +47,7 @@
                </GridPane.margin>
             </Label>
             <Button fx:id="replyButton" mnemonicParsing="false" text="Reply" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Button fx:id="moreButton" mnemonicParsing="false" text="More Detail" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="moreButton" mnemonicParsing="false"  text="More Detail" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <ImageView fitHeight="67.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
          </children>
       </GridPane>

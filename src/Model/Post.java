@@ -6,6 +6,11 @@ public abstract class Post {
     private String title;
     private String description;
     public String creatorID;
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     private boolean status;
     public boolean delete; //delete post should still be accessible if there was an admin extension
 

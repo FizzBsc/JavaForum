@@ -1,21 +1,23 @@
 package Controller;
 
 import Model.Databases;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.fxml.FXML;
-import javafx.event.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Login {
     public static String studentID;
     @FXML public Button loginButton;
+    @FXML public Button quitButton;
     @FXML private Label iDIndicator;
     @FXML private TextField inputSID;
 
@@ -61,4 +63,10 @@ public class Login {
 
 
     }
+    @FXML
+    public void quitClickHandler(ActionEvent actionEvent) throws Exception
+    {
+        Platform.exit();
+    }
+
 }

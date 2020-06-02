@@ -28,7 +28,7 @@ public class PostReply implements Initializable {
     @FXML public Button cancelBut;
 
 
-    public void initData(Post post) throws Exception {
+    public void initData(Post post) {
         selectedPost = post;
         if (selectedPost instanceof Sale){
             postIDLbl.setText(selectedPost.getPostID());
@@ -66,6 +66,16 @@ public class PostReply implements Initializable {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
+    }
+    @FXML
+    public void cancelForm(ActionEvent actionEvent) throws Exception {
+
+        Stage stage = (Stage) cancelBut.getScene().getWindow();
+        MainMenu menu = new MainMenu();
+        menu.startMenu();
+        stage.close();
+
 
     }
 
