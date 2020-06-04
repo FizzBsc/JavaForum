@@ -1,7 +1,10 @@
 package Model;
 
-public abstract class Post {
+import java.io.Serializable;
 
+public abstract class Post implements Serializable {
+
+    private static final long serialVersionUID = 202006052421L;
     public String postID;
     private String title;
     private String description;
@@ -16,12 +19,12 @@ public abstract class Post {
 
 
 
-    public Post (String postID, String title, String description, String creatorID) {
+    public Post (String postID, String title, String description, String creatorID, Boolean status) {
         this.postID = postID;
         this.title = title;
         this.description = description;
         this.creatorID = creatorID;
-        status = true;
+        this.status = true;
         delete = false;
 
     }

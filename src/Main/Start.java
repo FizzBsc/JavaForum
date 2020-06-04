@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static Model.ConnectionTest.linkDB;
 import static Model.Databases.*;
@@ -21,6 +20,8 @@ public class Start extends Application {
     public static void main(String[] args) throws SQLException {
 
     Model.ConnectionTest.linkDB();
+        //createTable("Reply", "Replies");
+
         linkDBPosts();
         launch(args);
     }

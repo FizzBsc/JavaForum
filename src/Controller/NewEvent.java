@@ -65,10 +65,11 @@ public class NewEvent {
         String date = dateField.getText();
         String venue = venField.getText();
 
-        Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0);
+        Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0, true);
         Databases.post.add(e1);
         System.out.println(e1.postID);//delete before submit
         insertTable(e1);
+        Databases.pics.add(new Model.Photo(e1.postID));
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

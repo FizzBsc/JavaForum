@@ -37,7 +37,7 @@ public class Syslink {
 
         int capacity = 0;
 
-        posts.add(new Event(null, title, description, studentID, venue, date, capacity, 0));
+        posts.add(new Event(null, title, description, studentID, venue, date, capacity, 0, true));
     }
     void NewReply() {
 

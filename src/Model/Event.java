@@ -1,26 +1,24 @@
 package Model;
 
-public class Event extends Post {
+import java.io.Serializable;
 
+public class Event extends Post implements Serializable {
+
+    private static final long serialVersionUID = 020260503421L;
     private String venue;
     private String date;
     private int capacity;
-
-
-
     private int attendeeCount;
-    public boolean status;
 
     static int sharedCounter = 0;
-    public Event(String postID, String title, String description, String creatorID,  String venue, String date,int capacity,int attendeeCount) {
-        super(postID, title, description, creatorID);
+    public Event(String postID, String title, String description, String creatorID, String venue, String date, int capacity, int attendeeCount, boolean status) {
+        super(postID, title, description, creatorID, status);
 
         this.venue = venue;
         this.date = date;
         this.capacity = capacity;
         this.attendeeCount = attendeeCount;
         this.postID = "EVE" + String.format("%03d", ++sharedCounter);
-        boolean status = true;
     }
 
 

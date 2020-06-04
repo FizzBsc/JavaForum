@@ -65,10 +65,11 @@ public class NewSale {
 
 
 
-        Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID,askPrice,0,minRaise);
+        Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID,askPrice,0,minRaise,true);
         Databases.post.add(s1);
         System.out.println(s1.postID);//delete before submit
         insertTable(s1);
+        Databases.pics.add(new Model.Photo(s1.postID));
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

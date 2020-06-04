@@ -1,7 +1,11 @@
 package Model;
 
-public class Reply {
+import java.io.Serializable;
 
+public class Reply implements Serializable {
+
+
+    private static final long serialVersionUID = 626266657515L;
     public String postID;
     public double value;
     public String responderID;

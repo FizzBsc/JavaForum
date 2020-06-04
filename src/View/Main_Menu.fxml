@@ -22,12 +22,14 @@
               <menus>
                 <Menu fx:id="uniLinkDrop" mnemonicParsing="false" text="UniLink">
                   <items>
+                        <MenuItem fx:id="About" mnemonicParsing="false" onAction="#aboutClickHandler" text="About" />
                     <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#quitClickHandler" text="Quit" />
                   </items>
                 </Menu>
                 <Menu fx:id="dataDrop" mnemonicParsing="false" text="Data">
                   <items>
-                    <MenuItem fx:id="save" mnemonicParsing="false" onAction="#newSaveClickHandler" text="Save" />
+                    <MenuItem fx:id="save" mnemonicParsing="false" onAction="#newSaveClickHandler" text="Export" />
+                        <MenuItem fx:id="load" mnemonicParsing="false" onAction="#newLoadClickHandler" text="Import" />
                   </items>
                 </Menu>
               </menus>

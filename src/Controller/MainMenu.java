@@ -15,7 +15,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,6 +35,8 @@ public class MainMenu implements Initializable {
     @FXML public Button newJob;
     @FXML public MenuItem save;
     @FXML public MenuItem quit;
+    @FXML public MenuItem About;
+    @FXML public MenuItem load;
 
     @FXML private ListView<Post> listView;
 
@@ -78,11 +84,26 @@ public class MainMenu implements Initializable {
            System.out.println("Fail");
        }
     }
+    @FXML
+    public void aboutClickHandler(ActionEvent actionEvent) throws Exception {
+        DevInfo.startDevInfo();
+    }
 
     @FXML
     public void newSaveClickHandler(ActionEvent actionEvent) throws Exception{
-        checkSaleTable("Posts","Sale");
-        System.out.println("DataSaved");
+        Stage primaryStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        Databases.writeToFile(selectedFile);
+    }@FXML
+    public void newLoadClickHandler(ActionEvent actionEvent) throws Exception{
+
+        Stage primaryStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        Databases.readFromFile(selectedFile);
     }
     @FXML
     public void newEventClickHandler(ActionEvent actionEvent) throws Exception{

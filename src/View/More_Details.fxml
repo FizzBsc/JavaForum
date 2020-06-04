@@ -86,8 +86,8 @@
                         <Button fx:id="saveBut" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Button" />
                      </children>
                   </HBox>
-                  <ImageView fitHeight="167.0" fitWidth="232.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button fx:id="upload" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <ImageView fx:id="image" fitHeight="167.0" fitWidth="232.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadClickHandler" prefHeight="25.0" prefWidth="104.0" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                   <Label fx:id="info2" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <Label fx:id="capacity" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                   <Label fx:id="atendeeCount" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />

@@ -10,10 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PostListViewCell extends ListCell<Post> {
@@ -26,6 +31,10 @@ public class PostListViewCell extends ListCell<Post> {
     @FXML Button replyButton;
     @FXML Button moreButton;
     @FXML private GridPane gridPane;
+    @FXML Label aCount;
+    @FXML Label capacity;
+    @FXML ImageView newPhoto;
+
     private FXMLLoader mLLoader;
 
     @Override
@@ -52,25 +61,37 @@ public class PostListViewCell extends ListCell<Post> {
                 gridPane.setStyle("-fx-background-color: #C0FFEE");
                 label5.setText("Date: " + ((Event) post).getDate());
                 label6.setText("Venue: " + ((Event) post).getVenue());
+                aCount.setText("Attendee Count: " + ((Event) post).getAttendeeCount());
+                capacity.setText("Capacity: " +((Event) post).getCapacity());
+
             }
             else if (post instanceof Sale){
                 gridPane.setStyle("-fx-background-color: #fbfbaf");
-                label5.setText("Price: " + ((Sale) post).getAskPrice());
-                label6.setText("Highest offer: " + ((Sale) post).getHighOffer());
+                label5.setText("Price: $" + ((Sale) post).getAskPrice());
+                label6.setText("Highest offer: $" + ((Sale) post).getHighOffer());
+                aCount.setVisible(false);
+                capacity.setVisible(false);
             }
             else if (post instanceof Job){
                 gridPane.setStyle("-fx-background-color: #fedbea");
-                label5.setText("Offer: " + ((Job) post).getpPrice());
-                label6.setText("Minimum offer: " + ((Job) post).getLowOffer());
+                label5.setText("Offer: $" + ((Job) post).getpPrice());
+                label6.setText("Minimum offer: $" + ((Job) post).getLowOffer());
+                aCount.setVisible(false);
+                capacity.setVisible(false);
             }
+
+
 
             label1.setText("Post ID: " + post.getPostID());
             label2.setText("Title: " +post.getTitle());
             label3.setText("Description: " + post.getDescription());
             label4.setText("Creator: " + post.getCreatorID());
-            if (post.getCreatorID().equals(Login.studentID) || post.getStatus() == false)
+            System.out.println(post.getStatus() +  post.getPostID());
+            if (post.getCreatorID().equals(Login.studentID) || post.getStatus() == false) {
                 replyButton.setVisible(false);
-            else
+            } else {
+
+
                 replyButton.setOnAction(e -> {
                     try {
                         newReplyClickHandler(post.getPostID());
@@ -78,8 +99,9 @@ public class PostListViewCell extends ListCell<Post> {
                         exception.printStackTrace();
                     }
                 });
+            }
 
-            if (post.getCreatorID().equals(Login.studentID))
+            if (post.getCreatorID().equals(Login.studentID)) {
                 moreButton.setOnAction(e -> {
                     try {
                         moreDeetClickHandler(post.getPostID());
@@ -87,10 +109,21 @@ public class PostListViewCell extends ListCell<Post> {
                         exception.printStackTrace();
                     }
                 });
-            else
+            }else {
                 moreButton.setVisible(false);
+            }
 
-
+            for(int i = 0; i < Databases.pics.size(); i++){
+                if (post.getPostID().equals(Databases.pics.get(i).getPostID())){
+                    Image image = null;
+                    try {
+                        image = new Image(new FileInputStream(Databases.pics.get(i).getFile()));
+                    } catch (FileNotFoundException e) {
+                        image = new Image(String.valueOf(new File(String.valueOf(Databases.pics.get(i).getFile()))));
+                    }
+                    newPhoto.setImage(image);
+                }
+            }
             setText(null);
             setGraphic(gridPane);
         }

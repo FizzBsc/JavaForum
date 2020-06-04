@@ -60,10 +60,11 @@ public class NewJob {
         int propPrice = Integer.parseInt(proField.getText());
 
 
-        Model.Job j1 = new Model.Job(null, title, description, Login.studentID,propPrice,0);
+        Model.Job j1 = new Model.Job(null, title, description, Login.studentID,propPrice,0,true);
         Databases.post.add(j1);
         System.out.println(j1.postID);//delete before submit
         insertTable(j1);
+        Databases.pics.add(new Model.Photo(j1.postID));
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();

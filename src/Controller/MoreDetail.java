@@ -13,8 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,6 +39,7 @@ public class MoreDetail implements Initializable {
     @FXML public Label info2;
     @FXML public Label capacity;
     @FXML public Label atendeeCount;
+    @FXML public ImageView image;
     @FXML private TableView<Reply> tableView;
 
 
@@ -45,7 +52,18 @@ public class MoreDetail implements Initializable {
         description.setText("Description: " + selectedPost.getDescription());
         postID.setText("Post ID: " + selectedPost.getPostID());
         closeBut.setText("close");
-
+        upload.setText("Upload Image");
+        for(int i = 0; i < Databases.pics.size(); i++){
+            if (selectedPost.getPostID().equals(Databases.pics.get(i).getPostID())){
+                Image pic = null;
+                try {
+                    pic = new Image(new FileInputStream(Databases.pics.get(i).getFile()));
+                } catch (FileNotFoundException e) {
+                    pic = new Image(String.valueOf(new File(String.valueOf(Databases.pics.get(i).getFile()))));
+                }
+                image.setImage(pic);
+            }
+        }
         if (selectedPost.getStatus() == false){
             closeBut.setDisable(true);
             closeBut.setText("Post Closed");
@@ -116,6 +134,28 @@ public class MoreDetail implements Initializable {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
+
+
+    }
+
+    @FXML
+    public void uploadClickHandler(ActionEvent actionEvent) throws Exception {
+        Stage primaryStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        System.out.println(selectedFile);
+        Image pic = new Image(new FileInputStream(selectedFile));
+
+
+        for (int i = 0; i<Databases.pics.size(); i++){
+            if (selectedPost.getPostID().equals(Databases.pics.get(i).getPostID())){
+                System.out.println("look here");
+
+                Databases.pics.get(i).setFile(selectedFile);
+            }
+        }
+        image.setImage(pic);
 
 
     }

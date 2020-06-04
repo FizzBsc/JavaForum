@@ -22,18 +22,18 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.666656494140625" minHeight="10.0" prefHeight="35.666656494140625" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="30.333343505859375" minHeight="10.0" prefHeight="30.333343505859375" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="label2" text="Hello" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="label2" text="Hello" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Label>
             <Label fx:id="label1" text="Hello" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </GridPane.margin>
             </Label>
             <Label fx:id="label4" text="Hello" GridPane.columnIndex="5" GridPane.rowIndex="2">
@@ -41,24 +41,26 @@
                   <Insets />
                </GridPane.margin>
             </Label>
-            <Label fx:id="label3" text="Hello" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="label3" text="Hello" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
-                  <Insets top="-20.0" />
+                  <Insets />
                </GridPane.margin>
             </Label>
             <Button fx:id="replyButton" mnemonicParsing="false" text="Reply" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Button fx:id="moreButton" mnemonicParsing="false" text="More Detail" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <ImageView fitHeight="67.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-            <Label fx:id="label5" alignment="CENTER" text="Hello" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ImageView fx:id="newPhoto" fitHeight="67.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+            <Label fx:id="label5" text="Hello" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
-                  <Insets left="150.0" />
+                  <Insets />
                </GridPane.margin>
             </Label>
-            <Label fx:id="label6" alignment="CENTER" text="Hello" GridPane.columnIndex="1">
+            <Label fx:id="label6" text="Hello" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <GridPane.margin>
-                  <Insets left="150.0" top="20.0" />
+                  <Insets />
                </GridPane.margin>
             </Label>
+            <Label fx:id="aCount" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Label fx:id="capacity" layoutX="271.0" layoutY="60.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>
