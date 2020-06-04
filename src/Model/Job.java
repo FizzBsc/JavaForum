@@ -3,6 +3,9 @@ package Model;
 public class Job extends Post {
 
     private double pPrice;
+
+
+
     private double lowOffer;
 
 
@@ -26,17 +29,27 @@ public class Job extends Post {
     public void getPostDetails() {
 
     }
+    public void setLowOffer(double lowOffer) {
+        this.lowOffer = lowOffer;
+    }
 
     @Override
     public boolean handleReply(String cell) {
         for (int i = 0; i < Databases.post.size(); i++)
             if (cell.equals(Databases.post.get(i).getPostID())) {
-                Post post = Databases.post.get(i);
-                if (post.getStatus() == true)
                     return true;
             }
 
         return false;
+    }
+    public double calcHighOffer(){
+        double j = lowOffer;
+        for (int i = 0; i<Databases.reply.size(); i++)
+            if (Databases.reply.get(i).getPostID().equals(postID))
+                if (Databases.reply.get(i).getValue() < j)
+                    j=Databases.reply.get(i).getValue();
+
+        return j;
     }
 
     @Override

@@ -3,6 +3,9 @@ package Model;
 public class Sale extends Post {
 
     private double askPrice;
+
+
+
     private double highOffer;
     private double minRaise;
     int count = 0;
@@ -15,9 +18,12 @@ public class Sale extends Post {
 
         this.postID = "SAL" + String.format("%03d", ++sharedCounter);
         this.askPrice = askPrice;
-        this.highOffer = highOffer;
+        this.highOffer =  highOffer;
         this.minRaise = minRaise;
 
+    }
+    public void setHighOffer(double highOffer) {
+        this.highOffer = highOffer;
     }
 
     public double getAskPrice() {
@@ -36,13 +42,12 @@ public class Sale extends Post {
     public boolean handleReply(String cell) {
         for (int i = 0; i < Databases.post.size(); i++)
             if (cell.equals(Databases.post.get(i).getPostID())) {
-                Post post = Databases.post.get(i);
-                if (post.getStatus() == true)
                 return true;
             }
 
         return false;
     }
+
 
     @Override
     public String getReplyDetails() {
@@ -53,4 +58,6 @@ public class Sale extends Post {
     public String postID() {
         return null;
     }
+
+
 }

@@ -5,6 +5,9 @@ public class Event extends Post {
     private String venue;
     private String date;
     private int capacity;
+
+
+
     private int attendeeCount;
     public boolean status;
 
@@ -37,13 +40,15 @@ public class Event extends Post {
         return attendeeCount;
     }
 
+    public void setAttendeeCount(int attendeeCount) {
+        this.attendeeCount = attendeeCount;
+    }
 
     @Override
     public boolean handleReply(String cellID) {
         for (int i = 0; i < Databases.post.size(); i++)
             if (cellID.equals(Databases.post.get(i).getPostID())) {
-                Post post = Databases.post.get(i);
-                if (post.getStatus() == true)
+
                     return true;
             }
         return false;

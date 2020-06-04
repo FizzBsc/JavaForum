@@ -21,6 +21,8 @@ public class PostListViewCell extends ListCell<Post> {
     @FXML Label label2;
     @FXML Label label3;
     @FXML Label label4;
+    @FXML Label label5;
+    @FXML Label label6;
     @FXML Button replyButton;
     @FXML Button moreButton;
     @FXML private GridPane gridPane;
@@ -46,12 +48,21 @@ public class PostListViewCell extends ListCell<Post> {
                 }
 
             }
-            if (post instanceof Event)
+            if (post instanceof Event) {
                 gridPane.setStyle("-fx-background-color: #C0FFEE");
-            else if (post instanceof Sale)
+                label5.setText("Date: " + ((Event) post).getDate());
+                label6.setText("Venue: " + ((Event) post).getVenue());
+            }
+            else if (post instanceof Sale){
                 gridPane.setStyle("-fx-background-color: #fbfbaf");
-            else if (post instanceof Job)
+                label5.setText("Price: " + ((Sale) post).getAskPrice());
+                label6.setText("Highest offer: " + ((Sale) post).getHighOffer());
+            }
+            else if (post instanceof Job){
                 gridPane.setStyle("-fx-background-color: #fedbea");
+                label5.setText("Offer: " + ((Job) post).getpPrice());
+                label6.setText("Minimum offer: " + ((Job) post).getLowOffer());
+            }
 
             label1.setText("Post ID: " + post.getPostID());
             label2.setText("Title: " +post.getTitle());

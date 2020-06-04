@@ -16,7 +16,7 @@ public class Databases {
         checkSaleTable("Posts", "Sale");
         checkEventTable("Posts", "Event");
         checkJobTable("Posts", "Job");
-
+        checkReplytTable("Reply","Replies");
 
     }
 
@@ -25,14 +25,11 @@ public class Databases {
         try (Connection con = ConnectionTest.getConnection(DB_NAME);
              Statement stmt = con.createStatement();
         ) {
-            int result = stmt.executeUpdate("CREATE TABLE Job ("
+            int result = stmt.executeUpdate("CREATE TABLE Replies ("
                     + "postID VARCHAR(20) NOT NULL,"
-                    + "title VARCHAR(20) NOT NULL,"
-                    + "description VARCHAR(2000) NOT NULL,"
-                    + "creatorID VARCHAR(20) NOT NULL,"
-                    + "pPrice DOUBLE NOT NULL,"
-                    + "lowOffer DOUBLE NOT NULL,"
-                    + "PRIMARY KEY (postID))");
+                    + "value DOUBLE NOT NULL,"
+                    + "responderID VARCHAR(20) NOT NULL,"
+                    + "PRIMARY KEY (responderID))");
             if (result == 0) {
                 System.out.println("Table " + TABLE_NAME + " has been created successfully");
             } else {
@@ -43,7 +40,7 @@ public class Databases {
         }
     }
 
-    public static void insertTable(Post post) throws SQLException, ClassNotFoundException {
+    public static void insertTable(Post post) throws SQLException, ClassNotFoundException { //insert to post table
         String k = post.postID;
         String name = null;
         int result = 0;
@@ -73,6 +70,46 @@ public class Databases {
             System.out.println("Insert into table "+ name +" executed successfully");
         }
     }
+    public static void insertReplyTable(Reply reply) throws SQLException, ClassNotFoundException {
+        String k = reply.postID;
+        String name = null;
+        int result = 0;
+        try (Connection con = ConnectionTest.getConnection("Reply");
+             Statement stmt = con.createStatement();
+        ) {
+                String query = "INSERT INTO Replies" +
+                        " VALUES ('" + k + "','" + reply.getValue() + "','" + reply.getResponderID() + "')";
+                name = "Replies";
+
+            System.out.println(result + " row(s) affected");
+
+            con.commit();
+            System.out.println("Insert into table "+ name +" executed successfully");
+        }
+    }
+
+    public static void checkReplytTable(String DB_NAME, String TABLE_NAME){
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             Statement stmt = con.createStatement();
+        ) {
+            String query = "SELECT * FROM " + TABLE_NAME;
+
+            try (ResultSet resultSet = stmt.executeQuery(query)) {
+                while(resultSet.next()) {
+                    System.out.printf(" %s | %f | %s \n",
+                            resultSet.getString("postID"),resultSet.getDouble(2),resultSet.getString(3));
+                    reply.add(new Reply( resultSet.getString("postID"),resultSet.getDouble(2),resultSet.getString(3)));
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void checkEventTable(String DB_NAME, String TABLE_NAME){
         try (Connection con = ConnectionTest.getConnection(DB_NAME);
              Statement stmt = con.createStatement();
@@ -143,15 +180,52 @@ public class Databases {
             System.out.println(e.getMessage());
         }
     }
+    public boolean checkSaleHOffer(Post sale,double offer){
+
+        if(((Sale) sale).getHighOffer() == 0){
+            ((Sale) sale).setHighOffer(offer);
+            return true;
+        } else if ((((Sale) sale).getMinRaise()+((Sale) sale).getMinRaise()) < offer) {
+            ((Sale) sale).setHighOffer(offer);
+            return true;
+        }
+
+    return false;
+    }
+    public boolean checkJobLOffer(Post job,double offer){
+        if (((Job) job).getLowOffer() == 0){
+            ((Job) job).setLowOffer(offer);
+            return true;
+        }else if(((Job) job).getLowOffer() > offer){
+            ((Job) job).setLowOffer(offer);
+            return true;
+        }
+        return false;
+
+    }
+    public boolean checkEventCap(Post event, double value){
+        double calcCap = 0;
+        for ( int i = 0; i<reply.size(); i++){
+            if (event.getPostID().equals(reply.get(i).getPostID())){
+                calcCap += reply.get(i).getValue();
+            }
+        }
+        if (((Event) event).getCapacity() <= (calcCap + value)){
+            event.setStatus(false);
+            ((Event) event).setAttendeeCount((int)(calcCap + value));
+            return true;
+        }else if (((Event) event).getCapacity() > (calcCap + value)){
+            ((Event) event).setAttendeeCount((int)(calcCap + value));
+            return true;
+        }
+        return false;
+    }
 
     public static Connection getConnection(String dbName)
             throws SQLException, ClassNotFoundException {
-        //Registering the HSQLDB JDBC driver
         Class.forName("org.hsqldb.jdbc.JDBCDriver");
         System.out.println(dbName);
-        /* Database files will be created in the "database"
-         * folder in the project. If no username or password is
-         * specified, the default SA user and an empty password are used */
+
         Connection con = DriverManager.getConnection
                 ("jdbc:hsqldb:file:database/" + dbName, "SA", "");
         return con;

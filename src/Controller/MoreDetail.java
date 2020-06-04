@@ -1,15 +1,18 @@
 package Controller;
 
-import Model.Event;
-import Model.Job;
-import Model.Post;
-import Model.Sale;
+import Model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -30,7 +33,10 @@ public class MoreDetail implements Initializable {
     @FXML public Label info2;
     @FXML public Label capacity;
     @FXML public Label atendeeCount;
+    @FXML private TableView<Reply> tableView;
 
+
+    ObservableList<Reply> reply = FXCollections.observableArrayList(Databases.reply);
     private Post selectedPost;
 
     public void initData(Post post) {
@@ -39,6 +45,11 @@ public class MoreDetail implements Initializable {
         description.setText("Description: " + selectedPost.getDescription());
         postID.setText("Post ID: " + selectedPost.getPostID());
         closeBut.setText("close");
+
+        if (selectedPost.getStatus() == false){
+            closeBut.setDisable(true);
+            closeBut.setText("Post Closed");
+        }
 
         if (selectedPost instanceof Sale){
             info1.setText("Asking Price: $" + Double.toString(((Sale) selectedPost).getAskPrice()));
@@ -64,7 +75,29 @@ public class MoreDetail implements Initializable {
             column1.setText("Attendees");
             column2.setText(" ");
         }
+        column1.setCellValueFactory(new PropertyValueFactory<Reply, String>("responderID"));
+        column2.setCellValueFactory(new PropertyValueFactory<Reply, String>("value"));
+
+        FilteredList<Reply> filteredData = new FilteredList<>(reply, p -> true);
+
+        filteredData.setPredicate(reply -> {
+            if (reply.getPostID().equals(selectedPost.getPostID())) {
+                return true;
+            }
+            return false;
+        });
+
+        SortedList<Reply> sortedData = new SortedList<>(filteredData);
+
+        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+
+        tableView.setItems(sortedData);
+
+
     }
+
+
+
     @FXML
     public void backToMain(ActionEvent actionEvent) throws Exception {
 

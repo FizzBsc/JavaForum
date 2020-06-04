@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +30,7 @@ public class PostReply implements Initializable {
     @FXML public Button cancelBut;
 
 
+
     public void initData(Post post) {
         selectedPost = post;
         if (selectedPost instanceof Sale){
@@ -47,20 +50,61 @@ public class PostReply implements Initializable {
             submitBut.setText("Yes");
             cancelBut.setText("No");
         }
+
+
     }
 
     @FXML
     public void submitHandler(ActionEvent actionEvent) throws Exception{
+        Databases db = new Databases();
+        boolean k = false;
+        if (selectedPost instanceof Sale){
+            System.out.println("1");
+            while (k == false) {
+                System.out.println(2);
+                value = Double.parseDouble(valueField.getText());
+                k = db.checkSaleHOffer(selectedPost,value);
+                if (k == true) {
+                    System.out.println("this will change array");
+                } else {
+                    System.out.println("this wont");
+                    k = true;
+                }
+            }
+        } else if (selectedPost instanceof Job){
+            while (k == false) {
+                System.out.println(3);
+                value = Double.parseDouble(valueField.getText());
+                k = db.checkJobLOffer(selectedPost,value);
+                if (k == true) {
+                    System.out.println("this will change array");
+                } else {
+                    System.out.println("this throw exception here");
+                    k = true;
+                }
+            }
+        }else if (selectedPost instanceof Event){
+            while (k == false) {
+                System.out.println(4);
+                value = 1;
+                k = db.checkEventCap(selectedPost,value);
+                if (k == true) {
+                    System.out.println("this will change array");
+                } else {
+                    System.out.println("this throw exception here");
+                    k = true;
+                }
+            }
 
-        if (selectedPost instanceof Sale || selectedPost instanceof Job){
-            value = Double.parseDouble(valueField.getText());
-            //need to get exception here
-        } else if (selectedPost instanceof Event){
-            value = 1;
         }
 
-        Databases.reply.add(new Reply (selectedPost.getPostID(), value, Login.studentID));
+        Model.Reply r1 = new Reply (selectedPost.getPostID(), value, Login.studentID);
 
+        Databases.reply.add(r1);
+        //Databases.insertReplyTable(r1);
+
+        for (int i = 0; i < Databases.reply.size(); i++)
+            System.out.println(Databases.reply.get(i).getResponderID());
         Stage stage = (Stage) submitBut.getScene().getWindow();
 
         MainMenu menu = new MainMenu();

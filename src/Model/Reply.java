@@ -10,7 +10,7 @@ public class Reply {
     {
         this.postID = postID;
         this.value = value;
-        this.responderID =responderID;
+        this.responderID = responderID;
 
     }
 

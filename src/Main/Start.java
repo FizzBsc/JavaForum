@@ -14,16 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static Model.ConnectionTest.linkDB;
-import static Model.Databases.insertTable;
-import static Model.Databases.linkDBPosts;
+import static Model.Databases.*;
 
 public class Start extends Application {
 
     public static void main(String[] args) throws SQLException {
 
-Model.ConnectionTest.linkDB();
+    Model.ConnectionTest.linkDB();
         linkDBPosts();
-
         launch(args);
     }
 
