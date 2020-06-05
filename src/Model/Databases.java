@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.Login;
+
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -192,13 +194,18 @@ public class Databases {
     public boolean checkSaleHOffer(Post sale,double offer) throws SQLException {
 
         if(((Sale) sale).getHighOffer() == 0){
+            System.out.println("only valid at 0");
             ((Sale) sale).setHighOffer(offer);
             updateSale("Posts",sale.getPostID(),offer);
             return true;
-        } else if ((((Sale) sale).getMinRaise()+((Sale) sale).getMinRaise()) < offer) {
+        } else if ((((Sale) sale).getHighOffer()+((Sale) sale).getMinRaise()) < offer) {
+            System.out.println("at least its here");
             ((Sale) sale).setHighOffer(offer);
             updateSale("Posts",sale.getPostID(),offer);
             return true;
+        }else if ((((Sale) sale).getHighOffer()+((Sale) sale).getMinRaise()) > offer) {
+            System.out.println("yup");
+           return false;
         }
 
     return false;
@@ -213,6 +220,9 @@ public class Databases {
             updateJob("Posts",job.getPostID(),offer);
             return true;
         }
+        else if(((Job) job).getLowOffer() < offer){
+            return false;
+        }
         return false;
 
     }
@@ -221,6 +231,9 @@ public class Databases {
         for ( int i = 0; i<reply.size(); i++){
             if (event.getPostID().equals(reply.get(i).getPostID())){
                 calcCap += reply.get(i).getValue();
+            }
+            if (reply.get(i).getResponderID().equals(Login.studentID)){
+                return false;
             }
         }
         if (((Event) event).getCapacity() <= (calcCap + value)){
@@ -299,6 +312,25 @@ public class Databases {
         ois.close();
         fis.close();
 
+    }
+
+    public void deletingArr(Post p){
+        for (int i = 0; i < post.size(); i++){
+            if (post.get(i).getPostID().equals(p.getPostID()))
+                post.remove(i);
+        }
+    }
+    public void deleteDB(Post p, String tbName){
+        try (Connection con = ConnectionTest.getConnection("Posts");
+             PreparedStatement pS = con.prepareStatement("DELETE FROM "+tbName+" WHERE postID = ?");
+        ) {
+            pS.setString(1,p.getPostID());
+            pS.executeUpdate();
+            pS.close();
+            System.out.println("Deleted");
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     public static Connection getConnection(String dbName)
             throws SQLException, ClassNotFoundException {

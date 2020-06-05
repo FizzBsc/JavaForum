@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 
 public class Login {
@@ -43,24 +44,28 @@ public class Login {
 
     @FXML public void LoginClickHandler(ActionEvent actionEvent) throws Exception
     {
-        iDIndicator.setText(" ");
-        for(int i = 0; i < Databases.SID.size(); i++)
-        {
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            studentID = Databases.SID.get(i);
-            if (inputSID.getText().equals(studentID))
-            {
-                MainMenu menu = new MainMenu();
-                menu.startMenu();
-                stage.close();
-                break;
+        try {
+            iDIndicator.setText(" ");
+            for (int i = 0; i < Databases.SID.size(); i++) {
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                studentID = Databases.SID.get(i);
+                if (inputSID.getText().equals(studentID)) {
+                    MainMenu menu = new MainMenu();
+                    menu.startMenu();
+                    stage.close();
+                    break;
 
-            } else if (inputSID.getText() != studentID)
-                {
+                } else if (inputSID.getText() != studentID) {
                     iDIndicator.setText("ID Not Found");
                 }
+            }
+            if (inputSID.getText().isBlank()) {
+                throw new EmptyInputException("");
+            }
+        }catch (EmptyInputException e)
+        {
+            AlertBox.alert("Empty Field Error", "Entry cannot be empty", "Please enter a valid Student ID");
         }
-
 
     }
     @FXML

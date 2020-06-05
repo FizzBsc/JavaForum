@@ -8,10 +8,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MoreDetail implements Initializable {
@@ -52,6 +50,7 @@ public class MoreDetail implements Initializable {
         description.setText("Description: " + selectedPost.getDescription());
         postID.setText("Post ID: " + selectedPost.getPostID());
         closeBut.setText("close");
+        deleteBut.setText("Delete");
         upload.setText("Upload Image");
         for(int i = 0; i < Databases.pics.size(); i++){
             if (selectedPost.getPostID().equals(Databases.pics.get(i).getPostID())){
@@ -159,6 +158,34 @@ public class MoreDetail implements Initializable {
 
 
     }
+    @FXML
+    public void deleteButHandler() throws Exception {
+
+        Stage stage = (Stage) closeBut.getScene().getWindow();
+        MainMenu menu = new MainMenu();
+        Databases db = new Databases();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Post");
+        alert.setHeaderText("Do you want to delete post: " +selectedPost.getPostID());
+        alert.setContentText("Are you ok with this?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+
+            db.deletingArr(selectedPost);
+
+            if (selectedPost instanceof Event) {
+                db.deleteDB(selectedPost, "Event");
+            } else if (selectedPost instanceof Sale) {
+                db.deleteDB(selectedPost, "Sale");
+            } else if (selectedPost instanceof Job) {
+                db.deleteDB(selectedPost, "Job");
+            }
+            menu.startMenu();
+            stage.close();
+        }
+    }
+
 
 
     @Override

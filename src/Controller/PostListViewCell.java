@@ -198,10 +198,11 @@ public class PostListViewCell extends ListCell<Post> {
                 }
                 else if (post instanceof Model.Event) {
                     Model.Event event = (Model.Event) post;
-                    if(event.handleReply(cellID) == true){
-                        startReply(post);
-                        stage.close();
-                    }
+                        if (event.handleReply(cellID) == true) {
+                                    System.out.println("here as well");
+                                    startReply(post);
+                                    stage.close();
+                        }
                 }
                 else if (post instanceof Model.Job) {
                     Model.Job job = (Model.Job) post;

@@ -8,7 +8,6 @@ public class Sale extends Post implements Serializable {
     private double askPrice;
     private double highOffer;
     private double minRaise;
-    int count = 0;
 
 
     static int sharedCounter = 0;

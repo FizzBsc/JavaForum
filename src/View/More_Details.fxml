@@ -78,7 +78,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
                         <Button fx:id="closeBut" mnemonicParsing="false" onAction="#closePostHandler" prefHeight="25.0" prefWidth="97.0" text="Button" />
-                        <Button fx:id="deleteBut" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Button">
+                        <Button fx:id="deleteBut" mnemonicParsing="false" onAction="#deleteButHandler" prefHeight="25.0" prefWidth="97.0" text="Button">
                            <HBox.margin>
                               <Insets left="18.0" right="18.0" />
                            </HBox.margin>

@@ -24,9 +24,7 @@ public class Job extends Post implements Serializable {
     public double getLowOffer() {
         return lowOffer;
     }
-    public void getPostDetails() {
 
-    }
     public void setLowOffer(double lowOffer) {
         this.lowOffer = lowOffer;
     }
@@ -40,15 +38,7 @@ public class Job extends Post implements Serializable {
 
         return false;
     }
-    public double calcHighOffer(){
-        double j = lowOffer;
-        for (int i = 0; i<Databases.reply.size(); i++)
-            if (Databases.reply.get(i).getPostID().equals(postID))
-                if (Databases.reply.get(i).getValue() < j)
-                    j=Databases.reply.get(i).getValue();
 
-        return j;
-    }
 
     @Override
     public String getReplyDetails() {

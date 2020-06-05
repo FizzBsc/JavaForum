@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.InputMismatchException;
 import java.util.ResourceBundle;
 
 public class PostReply implements Initializable {
@@ -56,60 +57,73 @@ public class PostReply implements Initializable {
 
     @FXML
     public void submitHandler(ActionEvent actionEvent) throws Exception{
-        Databases db = new Databases();
-        boolean k = false;
-        if (selectedPost instanceof Sale){
-            System.out.println("1");
-            while (k == false) {
-                System.out.println(2);
-                value = Double.parseDouble(valueField.getText());
-                k = db.checkSaleHOffer(selectedPost,value);
-                if (k == true) {
-                    System.out.println("this will change array");
-                } else {
-                    System.out.println("this wont");
-                    k = true;
-                }
-            }
-        } else if (selectedPost instanceof Job){
-            while (k == false) {
-                System.out.println(3);
-                value = Double.parseDouble(valueField.getText());
-                k = db.checkJobLOffer(selectedPost,value);
-                if (k == true) {
-                    System.out.println("this will change array");
-                } else {
-                    System.out.println("this throw exception here");
-                    k = true;
-                }
-            }
-        }else if (selectedPost instanceof Event){
-            while (k == false) {
-                System.out.println(4);
-                value = 1;
-                k = db.checkEventCap(selectedPost,value);
-                if (k == true) {
-                    System.out.println("this will change array");
-                } else {
-                    System.out.println("this throw exception here");
-                    k = true;
-                }
-            }
-
-        }
-
-        Model.Reply r1 = new Reply (selectedPost.getPostID(), value, Login.studentID);
-
-        Databases.reply.add(r1);
-        //Databases.insertReplyTable(r1);
-
-        for (int i = 0; i < Databases.reply.size(); i++)
-            System.out.println(Databases.reply.get(i).getResponderID());
         Stage stage = (Stage) submitBut.getScene().getWindow();
 
-        MainMenu menu = new MainMenu();
-        menu.startMenu();
-        stage.close();
+        Databases db = new Databases();
+
+        double offer = 0;
+        String hL = null;
+        boolean k = false;
+        try {
+            if (selectedPost instanceof Sale) {
+                while (k == false) {
+                    value = Double.parseDouble(valueField.getText());
+                    k = db.checkSaleHOffer(selectedPost, value);
+                    if (k == false) {
+                        offer = ((Sale) selectedPost).getHighOffer() + ((Sale) selectedPost).getMinRaise();
+                        hL = "higher";
+                        throw new OfferException("");
+                    }
+                }
+            } else if (selectedPost instanceof Job) {
+                while (k == false) {
+                    value = Double.parseDouble(valueField.getText());
+                    k = db.checkJobLOffer(selectedPost, value);
+                    if (k == false) {
+                        offer = ((Job) selectedPost).getLowOffer();
+                        hL = "lower";
+                        throw new OfferException("");
+                    }
+                }
+            } else if (selectedPost instanceof Event) {
+                while (k == false) {
+                    value = 1;
+                    k = db.checkEventCap(selectedPost, value);
+                    if (k == false) {
+                        throw new AlreadyAttendingException("");
+                    }
+                }
+
+            }
+
+            Model.Reply r1 = new Reply(selectedPost.getPostID(), value, Login.studentID);
+
+            Databases.reply.add(r1);
+            //Databases.insertReplyTable(r1);
+
+            for (int i = 0; i < Databases.reply.size(); i++)
+                System.out.println(Databases.reply.get(i).getResponderID());
+
+            MainMenu menu = new MainMenu();
+            menu.startMenu();
+            stage.close();
+        } catch (InputMismatchException e) {
+            AlertBox.alert("Wrong input Error", "Wrong input for offer", "Please enter a valid value");
+            k = false;
+        }
+        catch (NumberFormatException e){
+            AlertBox.alert("Wrong input Error","Wrong input for offer", "Please enter a valid value");
+            k = false;
+        } catch (OfferException e){
+            AlertBox.alert("Offer Error","Offer must be "+hL+ " than " +offer, "Please enter a valid offer");
+            k = false;
+        }catch (AlreadyAttendingException e){
+            AlertBox.alert("Attending Error","You're already attending", "");
+            MainMenu menu = new MainMenu();
+            menu.startMenu();
+            stage.close();
+        }
+
 
     }
     @FXML

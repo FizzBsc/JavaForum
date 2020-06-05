@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 
 import static Model.Databases.insertTable;
 
@@ -55,20 +56,47 @@ public class NewJob {
 
     public void SubmitForm(ActionEvent actionEvent) throws Exception {
         Stage stage = (Stage) submitBut.getScene().getWindow();
-        String title = titleField.getText();
-        String description = descField.getText();
-        int propPrice = Integer.parseInt(proField.getText());
+        String title = null;
+        String description = null;
+        double propPrice = 0;
+        boolean pass = false;
+        try {
+            do {
+                title = titleField.getText();
+                if (titleField.getText().isBlank()) {
+                    throw new EmptyInputException("");
+                }
+                description = descField.getText();
+                if (descField.getText().isBlank()) {
+                    throw new EmptyInputException("");
+                }
+                propPrice = Double.parseDouble(proField.getText());
+                if (proField.getText().isBlank()) {
+                    throw new EmptyInputException("");
+                }
+                pass = true;
+            }while (pass == false);
 
-
-        Model.Job j1 = new Model.Job(null, title, description, Login.studentID,propPrice,0,true);
-        Databases.post.add(j1);
-        System.out.println(j1.postID);//delete before submit
-        insertTable(j1);
-        Databases.pics.add(new Model.Photo(j1.postID));
-        MainMenu menu = new MainMenu();
-        menu.startMenu();
-        stage.close();
-
+            Model.Job j1 = new Model.Job(null, title, description, Login.studentID, propPrice, 0, true);
+            Databases.post.add(j1);
+            System.out.println(j1.postID);//delete before submit
+            insertTable(j1);
+            Databases.pics.add(new Model.Photo(j1.postID));
+            MainMenu menu = new MainMenu();
+            menu.startMenu();
+            stage.close();
+        }catch (EmptyInputException e) {
+            AlertBox.alert("Empty Field Error", "Entry cannot be empty", "Please do not leave fields blank");
+            pass = false;
+        }
+        catch (InputMismatchException e) {
+            AlertBox.alert("Wrong input Error", "Wrong input for proposed price", "Enter a value for proposed price");
+            pass = false;
+        }
+        catch (NumberFormatException e){
+            AlertBox.alert("Wrong input Error", "Wrong input for proposed price", "Enter a value for proposed price");
+            pass = false;
+        }
         for (int i = 0; i<Databases.post.size(); i++){
             System.out.println(Databases.post.get(i).postID + Databases.post.get(i).getTitle());
         }
