@@ -17,8 +17,6 @@ public abstract class Post implements Serializable {
     private boolean status;
     public boolean delete; //delete post should still be accessible if there was an admin extension
 
-
-
     public Post (String postID, String title, String description, String creatorID, Boolean status) {
         this.postID = postID;
         this.title = title;
@@ -45,13 +43,11 @@ public abstract class Post implements Serializable {
         return creatorID;
     }
 
-
     public boolean getStatus() {
         return status;
     }
 
     public abstract boolean handleReply(String cell) throws Exception;
-    public abstract String getReplyDetails();
 
     public abstract String postID();
 }

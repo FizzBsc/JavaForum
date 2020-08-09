@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Job extends Post implements Serializable {
 
     private static final long serialVersionUID = 121216154421L;
+    static int sharedCounter = 0;
     private double pPrice;
     private double lowOffer;
-    static int sharedCounter = 0;
 
     public Job(String postID, String title, String description, String creatorID, double pPrice, double lowOffer, boolean status) {
         super(postID, title, description, creatorID, status);
@@ -39,11 +39,6 @@ public class Job extends Post implements Serializable {
         return false;
     }
 
-
-    @Override
-    public String getReplyDetails() {
-        return creatorID;
-    }
 
     @Override
     public String postID() {

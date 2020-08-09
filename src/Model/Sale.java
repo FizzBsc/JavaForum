@@ -8,8 +8,6 @@ public class Sale extends Post implements Serializable {
     private double askPrice;
     private double highOffer;
     private double minRaise;
-
-
     static int sharedCounter = 0;
 
     public Sale(String postID, String title, String description, String creatorID, double askPrice, double highOffer, double minRaise, boolean status) {
@@ -21,6 +19,7 @@ public class Sale extends Post implements Serializable {
         this.minRaise = minRaise;
 
     }
+
     public void setHighOffer(double highOffer) {
         this.highOffer = highOffer;
     }
@@ -43,19 +42,12 @@ public class Sale extends Post implements Serializable {
             if (cell.equals(Databases.post.get(i).getPostID())) {
                 return true;
             }
-
         return false;
-    }
-
-
-    @Override
-    public String getReplyDetails() {
-        return creatorID;
     }
 
     @Override
     public String postID() {
-        return null;
+        return postID;
     }
 
 

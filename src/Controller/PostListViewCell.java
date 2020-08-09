@@ -30,7 +30,7 @@ public class PostListViewCell extends ListCell<Post> {
     @FXML Label label6;
     @FXML Button replyButton;
     @FXML Button moreButton;
-    @FXML private GridPane gridPane;
+    @FXML GridPane gridPane;
     @FXML Label aCount;
     @FXML Label capacity;
     @FXML ImageView newPhoto;
@@ -46,51 +46,17 @@ public class PostListViewCell extends ListCell<Post> {
             setGraphic(null);
 
         } else {
-            if (mLLoader == null) {
-                mLLoader = new FXMLLoader(getClass().getResource("/View/ListCell.fxml"));
-                mLLoader.setController(this);
 
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            if (post instanceof Event) {
-                gridPane.setStyle("-fx-background-color: #C0FFEE");
-                label5.setText("Date: " + ((Event) post).getDate());
-                label6.setText("Venue: " + ((Event) post).getVenue());
-                aCount.setText("Attendee Count: " + ((Event) post).getAttendeeCount());
-                capacity.setText("Capacity: " +((Event) post).getCapacity());
-
-            }
-            else if (post instanceof Sale){
-                gridPane.setStyle("-fx-background-color: #fbfbaf");
-                label5.setText("Price: $" + ((Sale) post).getAskPrice());
-                label6.setText("Highest offer: $" + ((Sale) post).getHighOffer());
-                aCount.setVisible(false);
-                capacity.setVisible(false);
-            }
-            else if (post instanceof Job){
-                gridPane.setStyle("-fx-background-color: #fedbea");
-                label5.setText("Offer: $" + ((Job) post).getpPrice());
-                label6.setText("Minimum offer: $" + ((Job) post).getLowOffer());
-                aCount.setVisible(false);
-                capacity.setVisible(false);
-            }
-
-
+            loadDetail(post);
 
             label1.setText("Post ID: " + post.getPostID());
             label2.setText("Title: " +post.getTitle());
             label3.setText("Description: " + post.getDescription());
             label4.setText("Creator: " + post.getCreatorID());
-            System.out.println(post.getStatus() +  post.getPostID());
+
             if (post.getCreatorID().equals(Login.studentID) || post.getStatus() == false) {
                 replyButton.setVisible(false);
             } else {
-
 
                 replyButton.setOnAction(e -> {
                     try {
@@ -113,21 +79,61 @@ public class PostListViewCell extends ListCell<Post> {
                 moreButton.setVisible(false);
             }
 
+            Image image = null;
             for(int i = 0; i < Databases.pics.size(); i++){
                 if (post.getPostID().equals(Databases.pics.get(i).getPostID())){
-                    Image image = null;
+                    System.out.println("found");
                     try {
                         image = new Image(new FileInputStream(Databases.pics.get(i).getFile()));
                     } catch (FileNotFoundException e) {
                         image = new Image(String.valueOf(new File(String.valueOf(Databases.pics.get(i).getFile()))));
                     }
-                    newPhoto.setImage(image);
+                }else{
+                    image = new Image("images/Default1.jpg");
                 }
+                newPhoto.setImage(image);
             }
+
             setText(null);
             setGraphic(gridPane);
         }
 
+    }
+
+    private void loadDetail(Post post){
+        if (mLLoader == null) {
+            mLLoader = new FXMLLoader(getClass().getResource("/View/ListCell.fxml"));
+            mLLoader.setController(this);
+
+            try {
+                mLLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (post instanceof Event) {
+            gridPane.setStyle("-fx-background-color: #C0FFEE");
+            label5.setText("Date: " + ((Event) post).getDate());
+            label6.setText("Venue: " + ((Event) post).getVenue());
+            aCount.setText("Attendee Count: " + ((Event) post).getAttendeeCount());
+            capacity.setText("Capacity: " +((Event) post).getCapacity());
+
+        }
+        else if (post instanceof Sale){
+            gridPane.setStyle("-fx-background-color: #fbfbaf");
+            label5.setText("Price: $" + ((Sale) post).getAskPrice());
+            label6.setText("Highest offer: $" + ((Sale) post).getHighOffer());
+            aCount.setVisible(false);
+            capacity.setVisible(false);
+        }
+        else if (post instanceof Job){
+            gridPane.setStyle("-fx-background-color: #fedbea");
+            label5.setText("Offer: $" + ((Job) post).getpPrice());
+            label6.setText("Minimum offer: $" + ((Job) post).getLowOffer());
+            aCount.setVisible(false);
+            capacity.setVisible(false);
+        }
     }
 
     private void moreDeetClickHandler(String cellID) throws Exception {
@@ -199,7 +205,6 @@ public class PostListViewCell extends ListCell<Post> {
                 else if (post instanceof Model.Event) {
                     Model.Event event = (Model.Event) post;
                         if (event.handleReply(cellID) == true) {
-                                    System.out.println("here as well");
                                     startReply(post);
                                     stage.close();
                         }

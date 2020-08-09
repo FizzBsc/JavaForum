@@ -1,20 +1,14 @@
 package Model;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
-
-import javafx.scene.image.Image;
 
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 939369653291L;
-
-
-
     private String postID;
     private File file;
+
     public Photo (String postID) {
         this.postID = postID;
         file = new File(("images/Default1.jpg"));

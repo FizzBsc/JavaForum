@@ -4,6 +4,7 @@ import Model.Databases;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,11 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.InputMismatchException;
+import java.util.ResourceBundle;
 
 import static Model.Databases.insertTable;
 
-public class NewSale {
+public class NewSale implements Initializable {
+
     @FXML public Label welcomeID;
     @FXML public TextField titleField;
     @FXML public TextField askPriField;
@@ -28,16 +32,6 @@ public class NewSale {
     @FXML public Label minRaise;
     @FXML public Button submitBut;
     @FXML public Button cancelBut;
-    static int sharedCounter = 0;
-
-
-
-
-    @FXML
-    protected void initialize() throws Exception {
-        welcomeID.setText("New Sale Post");
-    }
-
 
     public static void newPost() throws Exception {
         try {
@@ -56,15 +50,20 @@ public class NewSale {
         }
     }
 
+    @Override
+    public void initialize(URL u, ResourceBundle rb){
+        welcomeID.setText("New Sale Post");
+    }
 
+    @FXML
     public void SubmitForm(ActionEvent actionEvent) throws Exception {
         Stage stage = (Stage) submitBut.getScene().getWindow();
-        String title = null;
-        String description = null;
-        double askPrice = 0;
-        double minRaise = 0;
+        String title;
+        String description;
+        double askPrice;
+        double minRaise;
+        boolean pass;
 
-        boolean pass = false;
         try {
             do {
                 title = titleField.getText();
@@ -88,7 +87,6 @@ public class NewSale {
 
             Model.Sale s1 = new Model.Sale(null, title, description, Login.studentID, askPrice, 0, minRaise, true);
             Databases.post.add(s1);
-            System.out.println(s1.postID);//delete before submit
             insertTable(s1);
             Databases.pics.add(new Model.Photo(s1.postID));
             MainMenu menu = new MainMenu();
@@ -107,10 +105,9 @@ public class NewSale {
             pass = false;
         }
 
-        for (int i = 0; i<Databases.post.size(); i++){
-            System.out.println(Databases.post.get(i).postID + Databases.post.get(i).getTitle());
-        }
     }
+
+    @FXML
     public void CancelForm(ActionEvent actionEvent) throws Exception {
 
         Stage stage = (Stage) cancelBut.getScene().getWindow();

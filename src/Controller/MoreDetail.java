@@ -38,10 +38,8 @@ public class MoreDetail implements Initializable {
     @FXML public Label capacity;
     @FXML public Label atendeeCount;
     @FXML public ImageView image;
-    @FXML private TableView<Reply> tableView;
-
-
     ObservableList<Reply> reply = FXCollections.observableArrayList(Databases.reply);
+    @FXML private TableView<Reply> tableView;
     private Post selectedPost;
 
     public void initData(Post post) {
@@ -52,15 +50,20 @@ public class MoreDetail implements Initializable {
         closeBut.setText("close");
         deleteBut.setText("Delete");
         upload.setText("Upload Image");
+        saveBut.setText("Edit post");
+        saveBut.setDisable(true);
+        Image pic = null;
         for(int i = 0; i < Databases.pics.size(); i++){
             if (selectedPost.getPostID().equals(Databases.pics.get(i).getPostID())){
-                Image pic = null;
+
                 try {
                     pic = new Image(new FileInputStream(Databases.pics.get(i).getFile()));
                 } catch (FileNotFoundException e) {
                     pic = new Image(String.valueOf(new File(String.valueOf(Databases.pics.get(i).getFile()))));
                 }
                 image.setImage(pic);
+            }else{
+                pic = new Image(String.valueOf(new File(String.valueOf(Databases.pics.get(i).getFile()))));
             }
         }
         if (selectedPost.getStatus() == false){
@@ -109,13 +112,8 @@ public class MoreDetail implements Initializable {
         sortedData.comparatorProperty().bind(tableView.comparatorProperty());
 
         tableView.setItems(sortedData);
-
-
     }
 
-
-
-    @FXML
     public void backToMain(ActionEvent actionEvent) throws Exception {
 
         Stage stage = (Stage) backBut.getScene().getWindow();
@@ -125,7 +123,7 @@ public class MoreDetail implements Initializable {
 
 
     }
-    @FXML
+
     public void closePostHandler(ActionEvent actionEvent) throws Exception {
 
         selectedPost.setStatus(false);
@@ -137,28 +135,23 @@ public class MoreDetail implements Initializable {
 
     }
 
-    @FXML
     public void uploadClickHandler(ActionEvent actionEvent) throws Exception {
         Stage primaryStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("src"));
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
-        System.out.println(selectedFile);
         Image pic = new Image(new FileInputStream(selectedFile));
 
 
         for (int i = 0; i<Databases.pics.size(); i++){
             if (selectedPost.getPostID().equals(Databases.pics.get(i).getPostID())){
-                System.out.println("look here");
 
                 Databases.pics.get(i).setFile(selectedFile);
             }
         }
         image.setImage(pic);
-
-
     }
-    @FXML
+
     public void deleteButHandler() throws Exception {
 
         Stage stage = (Stage) closeBut.getScene().getWindow();
@@ -185,8 +178,6 @@ public class MoreDetail implements Initializable {
             stage.close();
         }
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

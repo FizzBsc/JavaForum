@@ -21,16 +21,13 @@ import java.util.ResourceBundle;
 
 public class PostReply implements Initializable {
 
-    private Post selectedPost;
-    private double value;
-
     @FXML public Label postIDLbl;
     @FXML public Label valueLbl;
     @FXML public TextField valueField;
     @FXML public Button submitBut;
     @FXML public Button cancelBut;
-
-
+    private Post selectedPost;
+    private double value;
 
     public void initData(Post post) {
         selectedPost = post;
@@ -93,16 +90,12 @@ public class PostReply implements Initializable {
                         throw new AlreadyAttendingException("");
                     }
                 }
-
             }
 
             Model.Reply r1 = new Reply(selectedPost.getPostID(), value, Login.studentID);
 
             Databases.reply.add(r1);
-            //Databases.insertReplyTable(r1);
-
-            for (int i = 0; i < Databases.reply.size(); i++)
-                System.out.println(Databases.reply.get(i).getResponderID());
+            Databases.insertReplyTable(r1);
 
             MainMenu menu = new MainMenu();
             menu.startMenu();
@@ -123,8 +116,6 @@ public class PostReply implements Initializable {
             menu.startMenu();
             stage.close();
         }
-
-
     }
     @FXML
     public void cancelForm(ActionEvent actionEvent) throws Exception {

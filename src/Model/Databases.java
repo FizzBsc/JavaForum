@@ -14,9 +14,6 @@ public class Databases {
 
     public static void linkDBPosts() throws SQLException {
 
-
-        final String DB_NAME = "Posts";
-        final String TABLE_NAME = "Job";
         checkSaleTable("Posts", "Sale");
         checkEventTable("Posts", "Event");
         checkJobTable("Posts", "Job");
@@ -44,10 +41,6 @@ public class Databases {
             System.out.println(e.getMessage());
         }
     }
-
-
-
-
 
     public static void insertTable(Post post) throws SQLException, ClassNotFoundException { //insert to post table
         String k = post.postID;
@@ -79,6 +72,7 @@ public class Databases {
             System.out.println("Insert into table "+ name +" executed successfully");
         }
     }
+
     public static void insertReplyTable(Reply reply) throws SQLException, ClassNotFoundException {
         String k = reply.getPostID();
         String name = null;
@@ -168,6 +162,7 @@ public class Databases {
             System.out.println(e.getMessage());
         }
     }
+
     public static void checkJobTable(String DB_NAME, String TABLE_NAME){
         try (Connection con = ConnectionTest.getConnection(DB_NAME);
              Statement stmt = con.createStatement();
@@ -191,25 +186,97 @@ public class Databases {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void updateSale(String DB_NAME, String id, double newHigh) throws SQLException {
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             PreparedStatement pS = con.prepareStatement("UPDATE Sale SET highOffer = ? WHERE postID = ?");
+        ) {
+            pS.setDouble(1,newHigh);
+            pS.setString(2,id);
+
+            pS.executeUpdate();
+            pS.close();
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void updateJob(String DB_NAME, String id, double newLow) throws SQLException {
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             PreparedStatement pS = con.prepareStatement("UPDATE Job SET lowOffer = ? WHERE postID = ?");
+        ) {
+            pS.setDouble(1,newLow);
+            pS.setString(2,id);
+
+            pS.executeUpdate();
+            pS.close();
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void updateEvent(String DB_NAME, String id, double cap) throws SQLException {
+        try (Connection con = ConnectionTest.getConnection(DB_NAME);
+             PreparedStatement pS = con.prepareStatement("UPDATE Event SET attendeeCount = ? WHERE postID = ?");
+        ) {
+            pS.setDouble(1,cap);
+            pS.setString(2,id);
+            pS.executeUpdate();
+            pS.close();
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void writeToFile(File selectedDirectory) throws IOException {
+
+        FileOutputStream fos = new FileOutputStream(selectedDirectory);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(post);
+        oos.writeObject(reply);
+        oos.writeObject(pics);
+        oos.close();
+        fos.close();
+    }
+
+    public static void readFromFile(File newFile) throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(newFile);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        post = (ArrayList<Post>) ois.readObject();
+        reply = (ArrayList<Reply>) ois.readObject();
+        pics = (ArrayList<Photo>) ois.readObject();
+        System.out.println("load Successful");
+        ois.close();
+        fis.close();
+
+    }
+
+    public static Connection getConnection(String dbName)
+            throws SQLException, ClassNotFoundException {
+        Class.forName("org.hsqldb.jdbc.JDBCDriver");
+        System.out.println(dbName);
+        Connection con = DriverManager.getConnection
+                ("jdbc:hsqldb:file:database/" + dbName, "SA", "");
+        return con;
+    }
+
     public boolean checkSaleHOffer(Post sale,double offer) throws SQLException {
 
         if(((Sale) sale).getHighOffer() == 0){
-            System.out.println("only valid at 0");
             ((Sale) sale).setHighOffer(offer);
             updateSale("Posts",sale.getPostID(),offer);
             return true;
         } else if ((((Sale) sale).getHighOffer()+((Sale) sale).getMinRaise()) < offer) {
-            System.out.println("at least its here");
             ((Sale) sale).setHighOffer(offer);
             updateSale("Posts",sale.getPostID(),offer);
             return true;
         }else if ((((Sale) sale).getHighOffer()+((Sale) sale).getMinRaise()) > offer) {
-            System.out.println("yup");
            return false;
         }
 
     return false;
     }
+
     public boolean checkJobLOffer(Post job,double offer) throws SQLException {
         if (((Job) job).getLowOffer() == 0){
             ((Job) job).setLowOffer(offer);
@@ -226,6 +293,7 @@ public class Databases {
         return false;
 
     }
+
     public boolean checkEventCap(Post event, double value) throws SQLException {
         double calcCap = 0;
         for ( int i = 0; i<reply.size(); i++){
@@ -248,71 +316,6 @@ public class Databases {
         }
         return false;
     }
-    public static void updateSale(String DB_NAME, String id, double newHigh) throws SQLException {
-        try (Connection con = ConnectionTest.getConnection(DB_NAME);
-             PreparedStatement pS = con.prepareStatement("UPDATE Sale SET highOffer = ? WHERE postID = ?");
-        ) {
-            pS.setDouble(1,newHigh);
-            pS.setString(2,id);
-
-            pS.executeUpdate();
-            pS.close();
-            System.out.println("Update complete.");
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    public static void updateJob(String DB_NAME, String id, double newLow) throws SQLException {
-        try (Connection con = ConnectionTest.getConnection(DB_NAME);
-             PreparedStatement pS = con.prepareStatement("UPDATE Job SET lowOffer = ? WHERE postID = ?");
-        ) {
-            pS.setDouble(1,newLow);
-            pS.setString(2,id);
-
-            pS.executeUpdate();
-            pS.close();
-            System.out.println("Update complete.");
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    public static void updateEvent(String DB_NAME, String id, double cap) throws SQLException {
-        try (Connection con = ConnectionTest.getConnection(DB_NAME);
-             PreparedStatement pS = con.prepareStatement("UPDATE Event SET attendeeCount = ? WHERE postID = ?");
-        ) {
-            pS.setDouble(1,cap);
-            pS.setString(2,id);
-            pS.executeUpdate();
-            pS.close();
-            System.out.println("Update complete.");
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    public static void writeToFile(File selectedDirectory) throws IOException {
-
-        FileOutputStream fos = new FileOutputStream(selectedDirectory);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(post);
-        oos.writeObject(reply);
-        oos.writeObject(pics);
-        oos.close();
-        fos.close();
-    }
-    public static void readFromFile(File newFile) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(newFile);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        post = (ArrayList<Post>) ois.readObject();
-        reply = (ArrayList<Reply>) ois.readObject();
-        pics = (ArrayList<Photo>) ois.readObject();
-        System.out.println("load Successful");
-//        for (int i = 0; i<post.size(); i++){
-//            post.get(i).setStatus(true);
-//        }
-        ois.close();
-        fis.close();
-
-    }
 
     public void deletingArr(Post p){
         for (int i = 0; i < post.size(); i++){
@@ -320,6 +323,7 @@ public class Databases {
                 post.remove(i);
         }
     }
+
     public void deleteDB(Post p, String tbName){
         try (Connection con = ConnectionTest.getConnection("Posts");
              PreparedStatement pS = con.prepareStatement("DELETE FROM "+tbName+" WHERE postID = ?");
@@ -331,15 +335,6 @@ public class Databases {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-    public static Connection getConnection(String dbName)
-            throws SQLException, ClassNotFoundException {
-        Class.forName("org.hsqldb.jdbc.JDBCDriver");
-        System.out.println(dbName);
-
-        Connection con = DriverManager.getConnection
-                ("jdbc:hsqldb:file:database/" + dbName, "SA", "");
-        return con;
     }
 }
 

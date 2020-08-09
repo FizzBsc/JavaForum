@@ -5,6 +5,7 @@ import Model.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,11 +14,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.InputMismatchException;
+import java.util.ResourceBundle;
 
 import static Model.Databases.insertTable;
 
-public class NewJob {
+public class NewJob implements Initializable {
 
     @FXML public TextField proField;
     @FXML public TextField descField;
@@ -28,13 +31,6 @@ public class NewJob {
     @FXML public Button cancelBut;
     @FXML public TextField titleField;
     @FXML public Label welcomeID;
-
-
-    @FXML
-    protected void initialize() throws Exception {
-        welcomeID.setText("New Job Post");
-    }
-
 
     public static void newPost() throws Exception {
         try {
@@ -53,13 +49,17 @@ public class NewJob {
         }
     }
 
+    @Override
+    public void initialize(URL u, ResourceBundle rb) {
+        welcomeID.setText("New Job Post");
+    }
 
     public void SubmitForm(ActionEvent actionEvent) throws Exception {
         Stage stage = (Stage) submitBut.getScene().getWindow();
-        String title = null;
-        String description = null;
-        double propPrice = 0;
-        boolean pass = false;
+        String title;
+        String description;
+        double propPrice;
+        boolean pass;
         try {
             do {
                 title = titleField.getText();
@@ -79,7 +79,6 @@ public class NewJob {
 
             Model.Job j1 = new Model.Job(null, title, description, Login.studentID, propPrice, 0, true);
             Databases.post.add(j1);
-            System.out.println(j1.postID);//delete before submit
             insertTable(j1);
             Databases.pics.add(new Model.Photo(j1.postID));
             MainMenu menu = new MainMenu();
@@ -97,9 +96,7 @@ public class NewJob {
             AlertBox.alert("Wrong input Error", "Wrong input for proposed price", "Enter a value for proposed price");
             pass = false;
         }
-        for (int i = 0; i<Databases.post.size(); i++){
-            System.out.println(Databases.post.get(i).postID + Databases.post.get(i).getTitle());
-        }
+
     }
     public void CancelForm(ActionEvent actionEvent) throws Exception {
 
@@ -107,7 +104,6 @@ public class NewJob {
         MainMenu menu = new MainMenu();
         menu.startMenu();
         stage.close();
-
 
     }
 }

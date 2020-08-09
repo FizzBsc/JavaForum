@@ -53,12 +53,8 @@ public class Event extends Post implements Serializable {
     }
 
     @Override
-    public String getReplyDetails() {
-        return date;
+    public String postID() {
+        return postID;
     }
 
-    @Override
-    public String postID() {
-        return null;
-    }
 }

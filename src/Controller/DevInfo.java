@@ -19,15 +19,6 @@ public class DevInfo {
     @FXML public Button closeBut;
     @FXML public Label devInfo;
 
-    @FXML
-    private void initialize()
-    {
-        devInfo.setText("Developer Information");
-        name.setText("Name: Abdul Hafiz Abdul Halid");
-        studentNo.setText("Student Number: S3623311");
-        email.setText("S3623311@student.rmit.edu.au");
-        closeBut.setText("Close");
-    }
     public static void startDevInfo() throws Exception {
         try {
             Stage stage = new Stage();
@@ -42,7 +33,19 @@ public class DevInfo {
             System.out.println("Fail");
         }
     }
-    @FXML public void closeClickHandler(ActionEvent actionEvent) throws Exception
+
+    @FXML
+    private void initialize()
+    {
+        devInfo.setText("Developer Information");
+        name.setText("Name: Abdul Hafiz Abdul Halid");
+        studentNo.setText("Student Number: S3623311");
+        email.setText("S3623311@student.rmit.edu.au");
+        closeBut.setText("Close");
+    }
+
+    @FXML
+    public void closeClickHandler(ActionEvent actionEvent) throws Exception
     {
         Stage stage = (Stage) closeBut.getScene().getWindow();
         stage.close();

@@ -5,6 +5,7 @@ import Model.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,47 +15,31 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.ResourceBundle;
 import java.util.zip.DataFormatException;
 
 import static Model.Databases.insertTable;
 
-public class NewEvent {
+public class NewEvent implements Initializable {
 
 
-    @FXML
-    public Label welcomeID;
-    @FXML
-    public Label title;
-    @FXML
-    public Label description;
-    @FXML
-    public TextField titleField;
-    @FXML
-    public TextField descField;
-    @FXML
-    public TextField capField;
-    @FXML
-    public DatePicker dateField;
-    @FXML
-    public TextField venField;
-    @FXML
-    public Button submitBut;
-    @FXML
-    public Button cancelBut;
-
-
-    @FXML
-    protected void initialize() throws Exception {
-        welcomeID.setText("New Event Post");
-        dateField.getEditor().setDisable(true);
-    }
-
+    @FXML public Label welcomeID;
+    @FXML public Label title;
+    @FXML public Label description;
+    @FXML public TextField titleField;
+    @FXML public TextField descField;
+    @FXML public TextField capField;
+    @FXML public DatePicker dateField;
+    @FXML public TextField venField;
+    @FXML public Button submitBut;
+    @FXML public Button cancelBut;
 
     public static void newPost() throws Exception {
         try {
@@ -73,16 +58,21 @@ public class NewEvent {
         }
     }
 
+    @Override
+    public void initialize(URL u, ResourceBundle rb){
+        welcomeID.setText("New Event Post");
+        dateField.getEditor().setDisable(true);
+    }
 
     public void SubmitForm(ActionEvent actionEvent) throws Exception {
 
         Stage stage = (Stage) submitBut.getScene().getWindow();
-        String title = "";
-        String description = "";
-        int capacity = 0;
+        String title;
+        String description;
+        int capacity;
         String date = "";
-        String venue = "";
-        boolean pass = false;
+        String venue;
+        boolean pass;
         try {
             do {
                 title = titleField.getText();
@@ -102,7 +92,6 @@ public class NewEvent {
                     throw new InputMismatchException("");
                 }
 
-
                 venue = venField.getText();
                 if (venField.getText().isBlank()) {
                     throw new EmptyInputException("");
@@ -119,11 +108,9 @@ public class NewEvent {
                 pass = true;
 
             } while (pass = false);
-            System.out.println(pass);
 
             Model.Event e1 = new Event(null, title, description, Login.studentID, venue, date, capacity, 0, true);
             Databases.post.add(e1);
-            System.out.println(e1.postID);//delete before submit
             insertTable(e1);
             Databases.pics.add(new Model.Photo(e1.postID));
 
@@ -146,12 +133,6 @@ public class NewEvent {
             pass = false;
         }
 
-
-
-
-//        for (int i = 0; i<Databases.post.size(); i++){
-//            System.out.println(Databases.post.get(i).postID + Databases.post.get(i).getTitle());
-//        }
     }
 
     public void CancelForm(ActionEvent actionEvent) throws Exception {
